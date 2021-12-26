@@ -29,7 +29,7 @@ export type Airport = {
   }[];
 };
 
-export type ProcedureOptions = 'STAR' | 'IAC' | 'TAXI' | 'SID';
+export type ProcedureOptions = 'STAR' | 'IAC' | 'TAXI' | 'SID' | 'ADC' | 'PDC';
 
 export type Icao = string;
 

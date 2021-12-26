@@ -1,8 +1,8 @@
 import type { NextPage } from 'next';
 import { Text } from '@tunadao1/onc-components';
-import { TodoContainer } from '../src/styles/Global.styles';
+import { TodoContainer } from '../../src/styles/Global.styles';
 
-const Home: NextPage = () => {
+const ReleaseNotes: NextPage = () => {
   return (
     <TodoContainer>
       <Text
@@ -14,4 +14,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default ReleaseNotes;

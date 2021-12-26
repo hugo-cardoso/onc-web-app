@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const Global = createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -49,4 +49,40 @@ export const Global = createGlobalStyle`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  html,
+  body,
+  #__next {
+    width: 100%;
+  }
+`;
+
+export const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-color: ${ (props) => props.theme.colors.primary };
+  display: flex;
+`;
+
+export const Nav = styled.nav`
+  display: flex;
+  width: calc(${ (props) => props.theme.sizes.xl } * 2);
+  height: 100%;
+  background-color: ${ (props) => props.theme.colors.primaryLight };
+  flex-direction: column;
+`;
+
+export const Main = styled.main`
+  display: flex;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+`;
+
+export const TodoContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
