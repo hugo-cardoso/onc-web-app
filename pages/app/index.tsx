@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import Head from 'next/head'
 import { Text } from '@tunadao1/onc-components'
 import * as Styles from '../../src/styles/AppPage.styles';
+import * as GlobalStyles from '../../src/styles/Global.styles';
 import { SearchContext } from '../../src/contexts/searchContext';
 import { SearchProcedures } from '../../src/components/SearchProcedures';
 
@@ -31,10 +32,18 @@ const AppPage: NextPage = () => {
         </Styles.Sidebar>
         <Styles.Content>
           {
-            searchContext.activeProcedure && (
+            searchContext.activeProcedure ? (
               <ProcedureViewer
                 procedure={searchContext.activeProcedure}
               />
+            ) : (
+              <GlobalStyles.TodoContainer>
+                <Text
+                  size='medium'
+                  color='highlight'
+                  text='Select a procedure to view'
+                />
+              </GlobalStyles.TodoContainer>
             )
           }
         </Styles.Content>

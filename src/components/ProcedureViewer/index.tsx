@@ -31,7 +31,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           </Styles.Spinner>
         )}
       >
-        <Page pageNumber={1} scale={3} rotate={0}/>
+        <Page pageNumber={1} rotate={0} width={900}/>
       </Document>
     </Styles.Wrapper>
   )
