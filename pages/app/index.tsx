@@ -7,6 +7,7 @@ import { SearchProcedures } from '../../src/components/SearchProcedures';
 
 import type { NextPage } from 'next'
 import { PinnedProcedures } from '../../src/components/PinnedProcedures';
+import { ProcedureViewer } from '../../src/components/ProcedureViewer';
 
 const AppPage: NextPage = () => {
   const searchContext = useContext(SearchContext);
@@ -29,11 +30,13 @@ const AppPage: NextPage = () => {
           }
         </Styles.Sidebar>
         <Styles.Content>
-          <Text
-            text={searchContext.activeProcedure ? searchContext.activeProcedure.id : `TODO: Chart view`}
-            color='neutral'
-            size='medium'
-          />
+          {
+            searchContext.activeProcedure && (
+              <ProcedureViewer
+                procedure={searchContext.activeProcedure}
+              />
+            )
+          }
         </Styles.Content>
       </Styles.Wrapper>
     </>

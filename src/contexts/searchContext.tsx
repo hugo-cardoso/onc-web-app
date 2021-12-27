@@ -1,4 +1,6 @@
 import React, { createContext, useState } from 'react';
+import { localStoragePinnedProceduresService } from '../services/localStoragePinnedProceduresService';
+
 import type { Procedure, Airport, ProcedureOptions, Icao } from '../types';
 
 type ViewOptions = 'search' | 'pinned';
@@ -52,19 +54,24 @@ export const SearchProvider = (props: SearchContextProps) => {
   const [activeProcedure, setActiveProcedure] = useState<Procedure | null>(null);
   const [view, setView] = useState<ViewOptions>("search");
   const [procedures, setProcedures] = useState<Procedure[]>([]);
-  const [pinnedProcedures, setPinnedProcedures] = useState<Procedure[]>([]);
+  const [pinnedProcedures, setPinnedProcedures] = useState<Procedure[]>(localStoragePinnedProceduresService.get());
 
 
   const clearPinnedProcedures = () => {
     setPinnedProcedures([]);
+    localStoragePinnedProceduresService.set([]);
   };
 
   const addPinnedProcedure = (procedure: Procedure) => {
-    setPinnedProcedures([...pinnedProcedures, procedure]);
+    const newPinnedProcedures = [...pinnedProcedures, procedure];
+    setPinnedProcedures(newPinnedProcedures);
+    localStoragePinnedProceduresService.set(newPinnedProcedures);
   };
 
   const removePinnedProcedure = (procedure: Procedure) => {
-    setPinnedProcedures(pinnedProcedures.filter(p => p.id !== procedure.id));
+    const newPinnedProcedures = pinnedProcedures.filter(p => p.id !== procedure.id);
+    setPinnedProcedures(newPinnedProcedures);
+    localStoragePinnedProceduresService.set(newPinnedProcedures);
   };
 
   return (

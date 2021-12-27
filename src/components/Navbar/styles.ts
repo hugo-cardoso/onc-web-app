@@ -4,6 +4,7 @@ import { lighten } from 'polished';
 export const Navbar = styled.nav`
   display: flex;
   width: calc(${ (props) => props.theme.sizes.xl } * 2);
+  min-width: calc(${ (props) => props.theme.sizes.xl } * 2);
   height: 100%;
   background-color: ${ (props) => props.theme.colors.primaryLight };
   flex-direction: column;
