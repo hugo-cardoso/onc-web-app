@@ -5,8 +5,9 @@ export const Layout = styled.div`
   display: grid;
   width: 100%;
   height: 100%;
-  grid-template-columns: minmax(100px, auto) calc(${ (props) => props.theme.sizes.xxl } + calc(${ (props) => props.theme.sizes.sm } * 2));
-  grid-template-rows: 100%;
+  grid-template-columns: minmax(100px, auto) calc(${ (props) => props.theme.sizes.xxl } * 2 + calc(${ (props) => props.theme.sizes.sm } * 3));
+  grid-template-rows: repeat(2, 100%);
+  position: relative;
 `;
 
 export const Wrapper = styled.div`
@@ -63,6 +64,8 @@ export const Spinner = styled.div`
 `;
 
 export const Toolbar = styled.div`
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -73,5 +76,32 @@ export const Toolbar = styled.div`
 `;
 
 export const ToolbarItem = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: ${ (props) => props.theme.sizes.sm };
   margin-bottom: ${ (props) => props.theme.sizes.sm };
+`;
+
+export const TextError = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+  p {
+    margin-bottom: ${ (props) => props.theme.sizes.sm };
+  }
+`;
+
+export const AdPlaceholder = styled.div`
+  width: 120px;
+  height: 600px;
+  background-color: ${ (props) => props.theme.colors.primaryLight };
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: ${ (props) => props.theme.fonts.primary };
+  font-size: ${ (props) => props.theme.sizes.sm };
+  color: ${ (props) => props.theme.colors.primaryHighlight };
 `;
