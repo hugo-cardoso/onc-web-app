@@ -14,31 +14,22 @@ function MyApp({ Component, pageProps }: AppProps) {
     <ThemeProvider theme={theme}>
       <Head>
         <title>Open Nav Charts</title>
-        <meta name="description" content="Open Nav Charts is a free online aviation chart viewer for use in flight simulation." />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta property="og:title" content="Open Nav Charts" />
-        <meta property="og:site_name" content="Open Nav Charts" />
-        <meta property="og:description" content="Open Nav Charts is a free online aviation chart viewer for use in flight simulation." />
-        <meta property="og:image" content="/og_image.png" />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="627" />
-        <link rel="icon" href="/favicon.ico" />
-        <script data-ad-client="ca-pub-5349498948047909" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" />
+        <script data-ad-client="ca-pub-5349498948047909" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       </Head>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-KSPD90VK7W"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-  
-            gtag('config', 'G-KSPD90VK7W');
-          `}
-        </Script>
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-KSPD90VK7W"
+        strategy="afterInteractive"
+      />
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-KSPD90VK7W');
+        `}
+      </Script>
       <Global />
       <SearchProvider>
         <Wrapper>
