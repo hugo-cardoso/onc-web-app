@@ -24,23 +24,28 @@ export const Navbar = () => {
     {
       onClick: () => {
         searchContext.setView('search');
-        changeRoute('/app');
+        changeRoute('/app/search');
       },
       icon: 'search-line',
-      active: router.pathname === '/app' && searchContext.view === 'search',
+      active: router.pathname === '/app/search' && searchContext.view === 'search',
     },
     {
       onClick: () => {
         searchContext.setView('pinned');
-        changeRoute('/app');
+        changeRoute('/app/search');
       },
       icon: 'pushpin-2-line',
-      active: router.pathname === '/app' && searchContext.view === 'pinned',
+      active: router.pathname === '/app/search' && searchContext.view === 'pinned',
     },
     {
       onClick: () => changeRoute('/release-notes'),
       icon: 'information-line',
       active: router.pathname === '/release-notes',
+    },
+    {
+      onClick: () => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfVWHqJqDIRhOIXtfr0lt5B3xaGFpd2pIr5yf2LqDeC-7TVXA/viewform?usp=sf_link'),
+      icon: 'bug-line',
+      active: false
     }
   ];
 

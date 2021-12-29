@@ -1,14 +1,14 @@
 import { useContext } from 'react';
 import Head from 'next/head'
 import { Text } from '@tunadao1/onc-components'
-import * as Styles from '../../src/styles/AppPage.styles';
-import * as GlobalStyles from '../../src/styles/Global.styles';
-import { SearchContext } from '../../src/contexts/searchContext';
-import { SearchProcedures } from '../../src/components/SearchProcedures';
+import * as Styles from '../../../src/styles/AppPage.styles';
+import * as GlobalStyles from '../../../src/styles/Global.styles';
+import { SearchContext } from '../../../src/contexts/searchContext';
+import { SearchProcedures } from '../../../src/components/SearchProcedures';
 
 import type { NextPage } from 'next'
-import { PinnedProcedures } from '../../src/components/PinnedProcedures';
-import { ProcedureViewer } from '../../src/components/ProcedureViewer';
+import { PinnedProcedures } from '../../../src/components/PinnedProcedures';
+import { ProcedureViewer } from '../../../src/components/ProcedureViewer';
 
 const AppPage: NextPage = () => {
   const searchContext = useContext(SearchContext);

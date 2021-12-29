@@ -1,16 +1,23 @@
 import type { NextPage } from 'next';
-import { Text } from '@tunadao1/onc-components';
-import { TodoContainer } from '../src/styles/Global.styles';
+
+import { Donate } from '../src/components/Donate';
+
+import * as Styles from '../src/styles/Home.styles';
 
 const Home: NextPage = () => {
   return (
-    <TodoContainer>
-      <Text
-        text="TODO"
-        size="large"
-        color="highlight"
-      />
-    </TodoContainer>
+    <Styles.Wrapper>
+      <Styles.Hero>
+        <Styles.HeroTitle>Open Nav Charts</Styles.HeroTitle>
+        <Styles.HeroText>A <span>free</span> online aviation chart viewer for use in flight simulation.</Styles.HeroText>
+      </Styles.Hero>
+      <Styles.DonateSection>
+        <Styles.DonateTitle>Enjoying? Make a donation to the project</Styles.DonateTitle>
+        <Styles.DonateCards>
+          <Donate />
+        </Styles.DonateCards>
+      </Styles.DonateSection>
+    </Styles.Wrapper>
   )
 }
 
