@@ -97,11 +97,4 @@ export const TextError = styled.div`
 export const AdPlaceholder = styled.div`
   width: 120px;
   height: 600px;
-  background-color: ${ (props) => props.theme.colors.primaryLight };
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: ${ (props) => props.theme.fonts.primary };
-  font-size: ${ (props) => props.theme.sizes.sm };
-  color: ${ (props) => props.theme.colors.primaryHighlight };
 `;
