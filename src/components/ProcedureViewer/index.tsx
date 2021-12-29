@@ -180,16 +180,15 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           />
         </Styles.ToolbarItem>
         <Styles.AdPlaceholder>
-          <script async 
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5349498948047909"
-            crossOrigin="anonymous"></script>
           <ins className="adsbygoogle"
             style={{display:'inline-block',width: '120px', height: '600px'}}
             data-ad-client="ca-pub-5349498948047909"
             data-ad-slot="1668831009"></ins>
-          <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-          </script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `(adsbygoogle = window.adsbygoogle || []).push({});`,
+            }}
+          />
         </Styles.AdPlaceholder>
       </Styles.Toolbar>
     </Styles.Layout>
