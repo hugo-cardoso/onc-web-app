@@ -17,8 +17,15 @@ import type {
   Procedure,
   ServiceResponse,
 } from '../../types';
+import { useRouter } from 'next/router';
 
-export const SearchProcedures = () => {
+type SearchProceduresProps = {
+  icao?: Icao;
+  procedureType?: ProcedureOptions;
+};
+
+export const SearchProcedures = (props: SearchProceduresProps) => {
+  const router = useRouter();
   const searchContext = useContext(SearchContext);
 
   const [proceduresListStatus, setProceduresListStatus] = useState<'default' | 'loading' | 'empty' | 'error' | 'message'>('message');
@@ -64,6 +71,15 @@ export const SearchProcedures = () => {
 
     setProceduresListStatus('default');
     setProcedures(type === 'IAC' ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        ...router.query,
+        icao,
+        procedureType: type,
+      }
+    }, undefined, { shallow: true });
   };
 
   const handleChangeProcedureType = (value: ProcedureOptions) => {
@@ -112,6 +128,14 @@ export const SearchProcedures = () => {
       icao: procedure.icao,
       type: procedure.type,
     });
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        ...router.query,
+        procedure: id,
+      }
+    }, undefined, { shallow: true });
   }
 
   const handleSubmitSearchForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,6 +157,10 @@ export const SearchProcedures = () => {
 
   useEffect(() => {
     if (searchContext.airport && searchContext.procedures.length) setProceduresListStatus('default');
+
+    if (props.icao) {
+      updateProceduresList(props.icao, searchContext.procedureType);
+    }
   }, []);
 
   return (
@@ -142,12 +170,12 @@ export const SearchProcedures = () => {
           label="Search"
           placeholder="Search for airport ICAO"
           onChange={(value) => searchContext.setIcao(value)}
-          initialValue={searchContext.icao}
+          initialValue={props.icao || searchContext.icao}
         />
       </Styles.SearchForm>
       <Styles.ProceduresTabs>
         <TabsProcedures
-          initialTab={searchContext.procedureType as any}
+          initialTab={props.procedureType || searchContext.procedureType as any}
           onTabChange={handleChangeProcedureType}
         />
       </Styles.ProceduresTabs>

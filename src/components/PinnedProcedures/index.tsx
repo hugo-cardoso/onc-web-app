@@ -4,9 +4,12 @@ import { SearchContext } from '../../contexts/searchContext';
 import { groupProceduresByIcao } from '../../utils/groupProceduresByIcao';
 import * as Styles from './styles';
 
-import { Procedure, ProcedureOptions } from '../../types';
+import { ProcedureOptions } from '../../types';
+import { useRouter } from 'next/router';
 
 export const PinnedProcedures = () => {
+  const router = useRouter();
+
   const searchContext = useContext(SearchContext);
   const [procedureType, setProcedureType] = useState<ProcedureOptions>('STAR');
   
@@ -27,6 +30,16 @@ export const PinnedProcedures = () => {
     const procedure = searchContext.pinnedProcedures.find((procedure) => procedure.id === id);
     if (!procedure) return; 
     searchContext.setActiveProcedure(procedure);
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        ...router.query,
+        icao: procedure.icao,
+        procedureType: procedure.type,
+        procedure: procedure.id,
+      }
+    }, undefined, { shallow: true });
   };
 
   const handleClickProcedurePin = (id: string) => {

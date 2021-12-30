@@ -102,7 +102,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
   }, [pageRotation])
 
   useEffect(() => {
-    console.log('render')
     resetControls();
   }, [props.procedure]);
 
@@ -130,6 +129,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           file={`${ process.env.NEXT_PUBLIC_API_URL }/charts/id?id=${ props.procedure.id }`}
           renderMode='canvas'
           onLoadSuccess={handleDocumentLoadSuccess}
+          onLoadError={() => setStatus('error')}
           loading={(
             <Styles.Spinner>
               <Spinner />
