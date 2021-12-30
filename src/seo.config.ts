@@ -12,7 +12,7 @@ export const seoConfig = {
     url: DOMAIN,
     images: [
       {
-        url: `${DOMAIN}/og-image.png`,
+        url: `${DOMAIN}/og_image.png`,
         width: 1200,
         height: 627,
         type: 'image/png',
