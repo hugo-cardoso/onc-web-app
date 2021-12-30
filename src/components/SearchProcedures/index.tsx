@@ -75,7 +75,6 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     router.push({
       pathname: '/app/search',
       query: {
-        ...router.query,
         icao,
         procedureType: type,
       }
