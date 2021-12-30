@@ -7,6 +7,7 @@ export const seoConfig = {
   description: 'Open Nav Charts is a free online aviation chart viewer for use in flight simulation.',
   canonical: DOMAIN,
   openGraph: {
+    type: 'website',
     title: 'Open Nav Charts',
     description: 'Open Nav Charts is a free online aviation chart viewer for use in flight simulation.',
     url: DOMAIN,
@@ -17,8 +18,11 @@ export const seoConfig = {
         height: 627,
         type: 'image/png',
       }
-    ]
+    ],
   },
+  facebook: {
+    appId: '610657423380802',
+  }
 } as DefaultSeoProps;
 
 export const siteLinkSearch = {
