@@ -69,7 +69,7 @@ export const Toolbar = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: ${ (props) => props.theme.sizes.sm };
+  padding: ${ (props) => props.theme.sizes.sm };
   box-sizing: border-box;
   border-left: 1px solid ${ (props) => props.theme.colors.primaryLight };
   background-color: ${ (props) => props.theme.colors.primaryDark };
@@ -95,6 +95,11 @@ export const TextError = styled.div`
 `;
 
 export const AdPlaceholder = styled.div`
-  width: 120px;
+  width: 100%;
   height: 600px;
+  background-color: ${ (props) => props.theme.colors.primary };
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${ (props) => props.theme.sizes.xxs };
 `;

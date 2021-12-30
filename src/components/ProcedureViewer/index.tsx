@@ -180,14 +180,10 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           />
         </Styles.ToolbarItem>
         <Styles.AdPlaceholder>
-          <ins className="adsbygoogle"
-            style={{display:'inline-block',width: '120px', height: '600px'}}
-            data-ad-client="ca-pub-5349498948047909"
-            data-ad-slot="1668831009"></ins>
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `(adsbygoogle = window.adsbygoogle || []).push({});`,
-            }}
+          <Text
+            text='Ad space'
+            size='medium'
+            color='highlight'
           />
         </Styles.AdPlaceholder>
       </Styles.Toolbar>

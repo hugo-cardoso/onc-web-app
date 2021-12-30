@@ -18,7 +18,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <SiteLinksSearchBoxJsonLd { ...siteLinkSearch } />
       <Head>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <script data-ad-client="ca-pub-5349498948047909" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       </Head>
       <Script
         src="https://www.googletagmanager.com/gtag/js?id=G-KSPD90VK7W"
