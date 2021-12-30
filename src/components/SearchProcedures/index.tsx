@@ -72,12 +72,16 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     setProceduresListStatus('default');
     setProcedures(type === 'IAC' ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
 
+    const query = {
+      icao,
+      procedureType: type,
+    } as any;
+
+    if (router.query.id) query.procedure = router.query.id;
+
     router.push({
       pathname: '/app/search',
-      query: {
-        icao,
-        procedureType: type,
-      }
+      query,
     }, undefined, { shallow: true });
   };
 
