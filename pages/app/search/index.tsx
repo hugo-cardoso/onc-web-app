@@ -88,8 +88,6 @@ AppPage.getInitialProps = async (context: NextPageContext): Promise<AppPageProps
     };
   }
 
-  console.log(pageProps);
-
   return pageProps;
 }
 
