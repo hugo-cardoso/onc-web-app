@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "next lint"
   },
@@ -25,6 +26,7 @@
     "babel-plugin-styled-components": "^2.0.2",
     "eslint": "8.5.0",
     "eslint-config-next": "12.0.7",
+    "next-sitemap": "^1.6.203",
     "styled-components": "^5.3.3",
     "typescript": "4.5.4"
   }
