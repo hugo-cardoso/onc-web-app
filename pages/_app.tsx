@@ -8,12 +8,15 @@ import Head from 'next/head';
 import Script from 'next/script'
 
 import '@tunadao1/onc-components/dist/onc-components.css'
+import { DefaultSeo, SiteLinksSearchBoxJsonLd } from 'next-seo';
+import { seoConfig, siteLinkSearch } from '../src/seo.config';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
+      <DefaultSeo { ...seoConfig } />
+      <SiteLinksSearchBoxJsonLd { ...siteLinkSearch } />
       <Head>
-        <title>Open Nav Charts</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <script data-ad-client="ca-pub-5349498948047909" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       </Head>

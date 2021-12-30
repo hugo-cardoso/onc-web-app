@@ -1,5 +1,7 @@
 import Document, { DocumentContext, DocumentInitialProps, Html, Head, Main, NextScript } from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+import { ServerStyleSheet } from 'styled-components';
+
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -33,15 +35,20 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="description" content="Open Nav Charts is a free online aviation chart viewer for use in flight simulation." />
-          <meta property="og:title" content="Open Nav Charts" />
-          <meta property="og:site_name" content="Open Nav Charts" />
-          <meta property="og:description" content="Open Nav Charts is a free online aviation chart viewer for use in flight simulation." />
-          <meta property="og:image" content="/og_image.png" />
-          <meta property="og:image:type" content="image/png" />
-          <meta property="og:image:width" content="1200" />
-          <meta property="og:image:height" content="627" />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href={`${ DOMAIN }/favicon.ico`} />
+          <link rel="apple-touch-icon" sizes="57x57" href={`${ DOMAIN }/apple-icon-57x57.png`} />
+          <link rel="apple-touch-icon" sizes="60x60" href={`${ DOMAIN }/apple-icon-60x60.png`} />
+          <link rel="apple-touch-icon" sizes="72x72" href={`${ DOMAIN }/apple-icon-72x72.png`} />
+          <link rel="apple-touch-icon" sizes="76x76" href={`${ DOMAIN }/apple-icon-76x76.png`} />
+          <link rel="apple-touch-icon" sizes="114x114" href={`${ DOMAIN }/apple-icon-114x114.png`} />
+          <link rel="apple-touch-icon" sizes="120x120" href={`${ DOMAIN }/apple-icon-120x120.png`} />
+          <link rel="apple-touch-icon" sizes="144x144" href={`${ DOMAIN }/apple-icon-144x144.png`} />
+          <link rel="apple-touch-icon" sizes="152x152" href={`${ DOMAIN }/apple-icon-152x152.png`} />
+          <link rel="apple-touch-icon" sizes="180x180" href={`${ DOMAIN }/apple-icon-180x180.png`} />
+          <link rel="icon" type="image/png" sizes="192x192"  href={`${ DOMAIN }/android-icon-192x192.png`} />
+          <link rel="icon" type="image/png" sizes="32x32" href={`${ DOMAIN }/favicon-32x32.png`} />
+          <link rel="icon" type="image/png" sizes="96x96" href={`${ DOMAIN }/favicon-96x96.png`} />
+          <link rel="icon" type="image/png" sizes="16x16" href={`${ DOMAIN }/favicon-16x16.png`} />
         </Head>
         <body>
           <Main />
