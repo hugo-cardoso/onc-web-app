@@ -135,7 +135,8 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     router.push({
       pathname: '/app/search',
       query: {
-        ...router.query,
+        icao: procedure.icao,
+        procedureType: procedure.type,
         procedure: id,
       }
     }, undefined, { shallow: true });

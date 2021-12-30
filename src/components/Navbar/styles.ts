@@ -26,6 +26,7 @@ export const NavbarItem = styled.a<NavbarItemProps>`
   text-decoration: none;
   margin-bottom: ${ (props) => props.theme.sizes.xxs };
   cursor: pointer;
+  position: relative;
 
   ${ (props) => props.active && css`
     color: ${ props.theme.colors.neutral };
@@ -36,4 +37,20 @@ export const NavbarItem = styled.a<NavbarItemProps>`
     color: ${ (props) => props.theme.colors.neutral };
     background-color: ${ (props) => lighten(0.05, props.theme.colors.primaryLight) };
   }
+`;
+
+export const NavbarItemBadge = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: ${ (props) => props.theme.sizes.lg };
+  height: ${ (props) => props.theme.sizes.lg };
+  border-radius: 3px;
+  background-color: ${ (props) => props.theme.colors.secondary };
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${ (props) => props.theme.sizes.sm };
+  font-family: ${ (props) => props.theme.fonts.primary };
+  color: ${ (props) => props.theme.colors.neutral };
 `;

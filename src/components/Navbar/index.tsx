@@ -7,6 +7,7 @@ type NavItem = {
   onClick: () => void;
   icon: string;
   active: boolean;
+  badge?: number | null;
 };
 
 export const Navbar = () => {
@@ -36,6 +37,7 @@ export const Navbar = () => {
       },
       icon: 'pushpin-2-line',
       active: router.pathname === '/app/search' && searchContext.view === 'pinned',
+      badge: searchContext.pinnedProcedures.length ? searchContext.pinnedProcedures.length : null,
     },
     {
       onClick: () => changeRoute('/release-notes'),
@@ -52,13 +54,16 @@ export const Navbar = () => {
   return (
     <Styles.Navbar>
       {
-        NAV_ITEMS.map(({ onClick, icon, active }) => (
+        NAV_ITEMS.map(({ onClick, icon, active, badge }) => (
           <Styles.NavbarItem
             key={icon}
             onClick={onClick}
             active={active}
           >
             <i className={`ri-${ icon }`}></i>
+            {
+              badge && <Styles.NavbarItemBadge>{ badge }</Styles.NavbarItemBadge>
+            }
           </Styles.NavbarItem>
         ))
       }
