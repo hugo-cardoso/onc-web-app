@@ -15,6 +15,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Open Nav Charts</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="a.validate.01" content="4df5a84804b29b992d36fc983f2c7a1e0068" />
         <script data-ad-client="ca-pub-5349498948047909" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       </Head>
       <Script
