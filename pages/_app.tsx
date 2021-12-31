@@ -23,15 +23,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         src="https://www.googletagmanager.com/gtag/js?id=G-KSPD90VK7W"
         strategy="afterInteractive"
       />
-      <Script id="google-analytics" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+      {
+        process.env.NODE_ENV === 'production' && (
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
 
-          gtag('config', 'G-KSPD90VK7W');
-        `}
-      </Script>
+              gtag('config', 'G-KSPD90VK7W');
+            `}
+          </Script>
+        )
+      }
       <Global />
       <SearchProvider>
         <Wrapper>

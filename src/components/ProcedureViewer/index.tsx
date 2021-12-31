@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs, PDFPageProxy,  } from 'react-pdf';
+import CanvasDraw from "react-canvas-draw";
 import { Button, Spinner, Text } from '@tunadao1/onc-components';
 import { ButtonIcon } from '../ButtonIcon';
 
 import * as Styles from './styles';
 
 import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationOrientation, ViewerStatus } from './types';
+import { SearchContext } from '../../contexts/searchContext';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -36,12 +38,19 @@ const defaultControls = {
 };
 
 export const ProcedureViewer = (props: ProcedureViewerProps) => {
+  const searchContext = useContext(SearchContext);
+
+  const canvasPageRef = useRef<any>(null);
+  const canvasRef: React.MutableRefObject<CanvasDraw | null> = useRef(null);
   const [status, setStatus] = useState<ViewerStatus>(defaultControls.status);
   const [pageNumber, setPageNumber] = useState(defaultControls.pageNumber);
   const [numberOfPages, setNumberOfPages] = useState(defaultControls.numberOfPages);
   const [zoom, setZoom] = useState<number>(defaultControls.zoom);
   const [pageRotation, setPageRotation] = useState<PageRotation>(defaultControls.rotation);
   const [pageOrientation, setPageOrientation] = useState<PageOrientation>(defaultControls.orientation);
+  const [pageDimensions, setPageDimensions] = useState<{ width: number, height: number }>({ width: 200, height: 200 });
+  const [pagePosition, setPagePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
+  const [activeDraw, setActiveDraw] = useState<boolean>(false);
 
   const resetControls = () => {
     setStatus(defaultControls.status);
@@ -49,6 +58,9 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     setPageNumber(defaultControls.pageNumber);
     setNumberOfPages(defaultControls.numberOfPages);
     setPageRotation(defaultControls.rotation);
+    setActiveDraw(false);
+    setPageDimensions({ width: 200, height: 200 });
+    setPagePosition({ x: 0, y: 0 });
   };
 
   const handleDocumentLoadSuccess = (pdf: any) => {
@@ -58,6 +70,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
 
   const handlePageLoadSuccess = (page: PDFPageProxy) => {
     setPageOrientation(page.width > page.height ? 'landscape' : 'portrait');
+    setPageDimensions({ width: page.width, height: page.height });
   };
   
 
@@ -72,6 +85,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
 
     if (orientation === 'left' && angle === 0) {
       angle = 270;
+      console.log(canvasPageRef.current);
       setPageRotation(angle);
       return;
     }
@@ -83,11 +97,34 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     }
 
     setPageRotation(angle);
+    // canvasRef.current?.clear();
   };
 
   const handleClickTryAgain = () => {
     resetControls();
     setStatus('default');
+  };
+
+  const handleClickZoom = (zoom: number) => {
+    setZoom(zoom);
+  };
+
+  const updatePageStyle = () => {
+    const pageStyle = getComputedStyle(canvasPageRef.current);
+
+    if (!pageStyle) return;
+
+    console.log(canvasPageRef.current.offsetLeft);
+
+    setPageDimensions({
+      width: Number(pageStyle.width.replace('px', '')),
+      height: Number(pageStyle.height.replace('px', '')),
+    });
+
+    setPagePosition({
+      x: canvasPageRef.current.offsetLeft,
+      y: canvasPageRef.current.offsetTop,
+    });
   };
 
   useEffect(() => {
@@ -141,42 +178,81 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
             pageNumber={pageNumber}
             width={900 * zoomLevels[pageOrientation][zoom]}
             onLoadSuccess={handlePageLoadSuccess}
-          />
+            renderAnnotationLayer={false}
+            renderTextLayer={false}
+            canvasRef={canvasPageRef}
+            onRenderSuccess={updatePageStyle}
+          >
+            {
+              activeDraw && (
+                <CanvasDraw
+                  style={{
+                    backgroundColor: 'transparent',
+                    position: 'absolute',
+                    left: pagePosition.x,
+                    top: pagePosition.y,
+                    zIndex: 10,
+                  }}
+                  backgroundColor='rgba(0, 0, 0, 0)'
+                  catenaryColor='rgba(0, 0, 0, 0)'
+                  hideGrid={true}
+                  brushRadius={3}
+                  brushColor='blue'
+                  canvasWidth={pageDimensions.width}
+                  canvasHeight={pageDimensions.height}
+                  ref={canvas => canvasRef.current = canvas}
+                />
+              )
+            }
+          </Page>
         </Document>
       </Styles.Wrapper>
       <Styles.Toolbar>
         <Styles.ToolbarItem>
           <ButtonIcon
+            icon='pencil-line'
+            onClick={() => setActiveDraw(!activeDraw)}
+            active={activeDraw}
+          />
+          <ButtonIcon
+            icon='close-line'
+            onClick={() => searchContext.setActiveProcedure(null)}
+          />
+        </Styles.ToolbarItem>
+        <Styles.ToolbarItem>
+          <ButtonIcon
             icon='zoom-out-line'
-            onClick={() => setZoom(zoom - 1)}
-            disabled={!zoom}
+            onClick={() => handleClickZoom(zoom - 1)}
+            disabled={!zoom || activeDraw}
           />
           <ButtonIcon
             icon='zoom-in-line'
-            onClick={() => setZoom(zoom + 1)}
-            disabled={zoom === zoomLevels[pageOrientation].length - 1}
+            onClick={() => handleClickZoom(zoom + 1)}
+            disabled={(zoom === zoomLevels[pageOrientation].length - 1) || activeDraw}
           />
         </Styles.ToolbarItem>
         <Styles.ToolbarItem>
           <ButtonIcon
             icon='anticlockwise-2-line'
             onClick={() => handleClickRotate('left')}
+            disabled={activeDraw}
           />
           <ButtonIcon
             icon='clockwise-2-line'
             onClick={() => handleClickRotate('right')}
+            disabled={activeDraw}
           />
         </Styles.ToolbarItem>
         <Styles.ToolbarItem>
           <ButtonIcon
             icon='arrow-left-s-line'
             onClick={() => setPageNumber(pageNumber - 1)}
-            disabled={pageNumber === 1}
+            disabled={(pageNumber === 1) || activeDraw}
           />
           <ButtonIcon
             icon='arrow-right-s-line'
             onClick={() => setPageNumber(pageNumber + 1)}
-            disabled={pageNumber === numberOfPages}
+            disabled={(pageNumber === numberOfPages) || activeDraw}
           />
         </Styles.ToolbarItem>
         <Styles.AdPlaceholder>

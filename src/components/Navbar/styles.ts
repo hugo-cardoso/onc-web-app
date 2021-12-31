@@ -16,7 +16,7 @@ type NavbarItemProps = {
   active?: boolean;
 }
 
-export const NavbarItem = styled.a<NavbarItemProps>`
+export const NavbarItem = styled.div<NavbarItemProps>`
   display: flex;
   height: calc(${ (props) => props.theme.sizes.xxl } * 2);
   align-items: center;
