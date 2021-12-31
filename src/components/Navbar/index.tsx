@@ -67,9 +67,9 @@ export const Navbar = () => {
           >
             <i className={`ri-${ icon }`}></i>
             {
-              (showBadge && badge) && (
+              (showBadge && badge) ? (
                 <Styles.NavbarItemBadge>{ badge }</Styles.NavbarItemBadge>
-              )
+              ) : null
             }
           </Styles.NavbarItem>
         ))
