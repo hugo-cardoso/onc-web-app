@@ -12,6 +12,7 @@ import { ProcedureViewer } from '../../../src/components/ProcedureViewer';
 import { Airport, Icao, Procedure, ProcedureOptions } from '../../../src/types';
 import { oncService } from '../../../src/services/oncService';
 import { useRouter } from 'next/router';
+import { ModalAirportInfo } from '../../../src/components/ModalAirportInfo';
 
 type AppPageProps = {
   procedureType?: ProcedureOptions;
@@ -83,6 +84,7 @@ const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) 
                   color='highlight'
                   text='Select a procedure to view'
                 />
+                <ModalAirportInfo />
               </GlobalStyles.TodoContainer>
             )
           }

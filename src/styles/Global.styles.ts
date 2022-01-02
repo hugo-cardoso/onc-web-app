@@ -86,4 +86,5 @@ export const TodoContainer = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+  position: relative;
 `;

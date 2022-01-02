@@ -22,6 +22,8 @@ type SearchContextType = {
   setAirport: (airport: Airport | null) => void;
   procedures: Procedure[];
   setProcedures: (procedures: Procedure[]) => void;
+  showAirportModal: boolean;
+  setShowAirportModal: (show: boolean) => void;
 };
 
 export const SearchContext = createContext<SearchContextType>({
@@ -41,6 +43,8 @@ export const SearchContext = createContext<SearchContextType>({
   setAirport: () => {},
   procedures: [],
   setProcedures: () => {},
+  showAirportModal: false,
+  setShowAirportModal: () => {},
 });
 
 type SearchContextProps = {
@@ -55,6 +59,7 @@ export const SearchProvider = (props: SearchContextProps) => {
   const [view, setView] = useState<ViewOptions>("search");
   const [procedures, setProcedures] = useState<Procedure[]>([]);
   const [pinnedProcedures, setPinnedProcedures] = useState<Procedure[]>(localStoragePinnedProceduresService.get());
+  const [showAirportModal, setShowAirportModal] = useState<boolean>(false);
 
 
   const clearPinnedProcedures = () => {
@@ -93,6 +98,8 @@ export const SearchProvider = (props: SearchContextProps) => {
         removePinnedProcedure,
         activeProcedure,
         setActiveProcedure,
+        showAirportModal,
+        setShowAirportModal,
       }}
     >
       { props.children }

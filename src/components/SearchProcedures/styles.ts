@@ -25,6 +25,9 @@ export const Filter = styled.div`
 export const Airport = styled.div`
   width: 100%;
   margin-bottom: ${ (props) => props.theme.sizes.md };
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   & > p {
     white-space: nowrap;

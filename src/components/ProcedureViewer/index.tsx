@@ -9,6 +9,7 @@ import * as Styles from './styles';
 import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationOrientation, ViewerStatus, DrawColor } from './types';
 import { SearchContext } from '../../contexts/searchContext';
 import { useRouter } from 'next/router';
+import { ModalAirportInfo } from '../ModalAirportInfo';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -227,6 +228,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
             }
           </Page>
         </Document>
+        <ModalAirportInfo />
       </Styles.Wrapper>
       <Styles.Toolbar>
         <Styles.ToolbarItem>

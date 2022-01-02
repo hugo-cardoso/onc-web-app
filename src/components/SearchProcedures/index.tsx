@@ -8,6 +8,7 @@ import {
   TabsProcedures,
   Text,
   ListProcedures,
+  Button,
 } from '@tunadao1/onc-components';
 import * as Styles from './styles';
 
@@ -32,7 +33,6 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
   const [proceduresQuery, setProceduresQuery] = useState<string>('');
 
   const updateProceduresList = async (icao: Icao, type: ProcedureOptions) => {
-    console.log('update')
     const {
       airport,
       setProcedures,
@@ -73,7 +73,9 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     } as Procedure));
 
     setProceduresListStatus('default');
-    setProcedures(type === 'IAC' ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
+
+    const headboardsCount = responseAirport.data.runways.flatMap((rwy: any) => rwy.headboards).length;
+    setProcedures(type === 'IAC' && headboardsCount ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
   };
 
   const handleChangeProcedureType = (value: ProcedureOptions) => {
@@ -168,7 +170,6 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
 
   useEffect(() => {
     if (searchContext.airport && searchContext.procedures.length) {
-      console.log('yes')
       setProceduresListStatus('default');
       return;
     };
@@ -201,6 +202,10 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
               text={`${ searchContext.airport.icao } - ${ searchContext.airport.name }`}
               color='neutral'
               size='medium'
+            />
+            <Button
+              text='INFO'
+              onClick={() => searchContext.setShowAirportModal(true)}
             />
           </Styles.Airport>
         )
