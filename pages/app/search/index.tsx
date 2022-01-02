@@ -9,27 +9,29 @@ import { SearchProcedures } from '../../../src/components/SearchProcedures';
 import type { NextPage, NextPageContext } from 'next'
 import { PinnedProcedures } from '../../../src/components/PinnedProcedures';
 import { ProcedureViewer } from '../../../src/components/ProcedureViewer';
-import { Icao, Procedure, ProcedureOptions } from '../../../src/types';
+import { Airport, Icao, Procedure, ProcedureOptions } from '../../../src/types';
 import { oncService } from '../../../src/services/oncService';
 import { useRouter } from 'next/router';
 
 type AppPageProps = {
-  icao?: Icao;
   procedureType?: ProcedureOptions;
   procedure?: Procedure;
+  procedures?: Procedure[];
+  airport?: Airport;
 };
 
-const AppPage: NextPage<AppPageProps> = ({ icao, procedureType, procedure }) => {
+const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) => {
   const router = useRouter();
   const searchContext = useContext(SearchContext);
 
   useEffect(() => {
     const query = {} as any;
 
-    if (icao) {
-      searchContext.setIcao(icao);
-      query.icao = icao;
-    };
+    if (airport) {
+      searchContext.setAirport(airport);
+      searchContext.setIcao(airport.icao);
+      query.icao = airport.icao;
+    }
 
     if (procedureType) {
       searchContext.setProcedureType(procedureType);
@@ -59,7 +61,7 @@ const AppPage: NextPage<AppPageProps> = ({ icao, procedureType, procedure }) => 
           {
             searchContext.view === 'search' && (
               <SearchProcedures
-                icao={icao}
+                icao={airport?.icao}
                 procedureType={procedureType}
               />
             )
@@ -98,16 +100,19 @@ AppPage.getInitialProps = async (context: NextPageContext): Promise<AppPageProps
 
   const pageProps: AppPageProps = {};
 
-  if (icao) pageProps.icao = icao;
-  if (procedureType) pageProps.procedureType = procedureType;
-  if (procedure) {
-    const procedures = await oncService.getProcedures(icao, procedureType);
-    const procedureFind = procedures.data.find((procedureItem: Procedure) => procedureItem.id === procedure);
+  if (icao) {
+    const airport = await oncService.getAirport(icao);
+    const procedures = await oncService.getProcedures(icao, procedureType || 'STAR');
 
-    if (procedureFind) {
-      pageProps.procedure = procedureFind;
-    };
-  }
+    if (airport.success) pageProps.airport = airport.data;
+
+    if (procedure && procedureType) {
+      const procedureFind = procedures.data.find((procedureItem: Procedure) => procedureItem.id === procedure);
+
+      pageProps.procedureType = procedureType;
+      if (procedureFind) pageProps.procedure = procedureFind;
+    }
+  };
 
   return pageProps;
 }

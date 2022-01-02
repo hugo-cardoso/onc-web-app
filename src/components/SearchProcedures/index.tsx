@@ -32,6 +32,7 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
   const [proceduresQuery, setProceduresQuery] = useState<string>('');
 
   const updateProceduresList = async (icao: Icao, type: ProcedureOptions) => {
+    console.log('update')
     const {
       airport,
       setProcedures,
@@ -166,7 +167,11 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
   }
 
   useEffect(() => {
-    if (searchContext.airport && searchContext.procedures.length) setProceduresListStatus('default');
+    if (searchContext.airport && searchContext.procedures.length) {
+      console.log('yes')
+      setProceduresListStatus('default');
+      return;
+    };
 
     if (props.icao) {
       updateProceduresList(props.icao, props.procedureType || searchContext.procedureType);
