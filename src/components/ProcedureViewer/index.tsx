@@ -6,7 +6,7 @@ import { ButtonIcon } from '../ButtonIcon';
 
 import * as Styles from './styles';
 
-import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationOrientation, ViewerStatus } from './types';
+import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationOrientation, ViewerStatus, DrawColor } from './types';
 import { SearchContext } from '../../contexts/searchContext';
 import { useRouter } from 'next/router';
 
@@ -36,6 +36,7 @@ const defaultControls = {
   zoom: 0,
   rotation: 0 as PageRotation,
   orientation: 'portrait' as PageOrientation,
+  drawColor: 'blue' as DrawColor,
 };
 
 export const ProcedureViewer = (props: ProcedureViewerProps) => {
@@ -53,6 +54,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
   const [pageDimensions, setPageDimensions] = useState<{ width: number, height: number }>({ width: 200, height: 200 });
   const [pagePosition, setPagePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
   const [activeDraw, setActiveDraw] = useState<boolean>(false);
+  const [drawColor, setDrawColor] = useState<DrawColor>('blue');
 
   const resetControls = () => {
     setStatus(defaultControls.status);
@@ -63,6 +65,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     setActiveDraw(false);
     setPageDimensions({ width: 200, height: 200 });
     setPagePosition({ x: 0, y: 0 });
+    setDrawColor('blue');
   };
 
   const handleDocumentLoadSuccess = (pdf: any) => {
@@ -205,19 +208,19 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
               activeDraw && (
                 <CanvasDraw
                   style={{
-                    backgroundColor: 'transparent',
+                    backgroundColor: 'rgba(255, 255, 255, 0)',
                     position: 'absolute',
                     left: pagePosition.x,
                     top: pagePosition.y,
                     zIndex: 10,
                   }}
-                  backgroundColor='rgba(0, 0, 0, 0)'
                   catenaryColor='rgba(0, 0, 0, 0)'
                   hideGrid={true}
                   brushRadius={3}
-                  brushColor='blue'
+                  brushColor={drawColor}
                   canvasWidth={pageDimensions.width}
                   canvasHeight={pageDimensions.height}
+                  lazyRadius={0}
                   ref={canvas => canvasRef.current = canvas}
                 />
               )
@@ -237,42 +240,85 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
             onClick={handleClickCloseProcedure}
           />
         </Styles.ToolbarItem>
-        <Styles.ToolbarItem>
-          <ButtonIcon
-            icon='zoom-out-line'
-            onClick={() => handleClickZoom(zoom - 1)}
-            disabled={!zoom || activeDraw}
-          />
-          <ButtonIcon
-            icon='zoom-in-line'
-            onClick={() => handleClickZoom(zoom + 1)}
-            disabled={(zoom === zoomLevels[pageOrientation].length - 1) || activeDraw}
-          />
-        </Styles.ToolbarItem>
-        <Styles.ToolbarItem>
-          <ButtonIcon
-            icon='anticlockwise-2-line'
-            onClick={() => handleClickRotate('left')}
-            disabled={activeDraw}
-          />
-          <ButtonIcon
-            icon='clockwise-2-line'
-            onClick={() => handleClickRotate('right')}
-            disabled={activeDraw}
-          />
-        </Styles.ToolbarItem>
-        <Styles.ToolbarItem>
-          <ButtonIcon
-            icon='arrow-left-s-line'
-            onClick={() => setPageNumber(pageNumber - 1)}
-            disabled={(pageNumber === 1) || activeDraw}
-          />
-          <ButtonIcon
-            icon='arrow-right-s-line'
-            onClick={() => setPageNumber(pageNumber + 1)}
-            disabled={(pageNumber === numberOfPages) || activeDraw}
-          />
-        </Styles.ToolbarItem>
+        {
+          !activeDraw ? (
+            <>
+              <Styles.ToolbarItem>
+                <ButtonIcon
+                  icon='zoom-out-line'
+                  onClick={() => handleClickZoom(zoom - 1)}
+                  disabled={!zoom || activeDraw}
+                />
+                <ButtonIcon
+                  icon='zoom-in-line'
+                  onClick={() => handleClickZoom(zoom + 1)}
+                  disabled={(zoom === zoomLevels[pageOrientation].length - 1) || activeDraw}
+                />
+              </Styles.ToolbarItem>
+              <Styles.ToolbarItem>
+                <ButtonIcon
+                  icon='anticlockwise-2-line'
+                  onClick={() => handleClickRotate('left')}
+                  disabled={activeDraw}
+                />
+                <ButtonIcon
+                  icon='clockwise-2-line'
+                  onClick={() => handleClickRotate('right')}
+                  disabled={activeDraw}
+                />
+              </Styles.ToolbarItem>
+              <Styles.ToolbarItem>
+                <ButtonIcon
+                  icon='arrow-left-s-line'
+                  onClick={() => setPageNumber(pageNumber - 1)}
+                  disabled={(pageNumber === 1) || activeDraw}
+                />
+                <ButtonIcon
+                  icon='arrow-right-s-line'
+                  onClick={() => setPageNumber(pageNumber + 1)}
+                  disabled={(pageNumber === numberOfPages) || activeDraw}
+                />
+              </Styles.ToolbarItem>
+            </>
+          ) : (
+            <>
+              <Styles.ToolbarItem>
+                <ButtonIcon
+                  icon='arrow-go-back-line'
+                  onClick={() => canvasRef.current?.undo()}
+                />
+                <ButtonIcon
+                  icon='refresh-line'
+                  onClick={() => canvasRef.current?.clear()}
+                />
+              </Styles.ToolbarItem>
+              <Styles.ToolbarItem>
+                <Styles.ToolbarItemColor
+                  color="blue"
+                  onClick={() => setDrawColor('blue')}
+                  active={drawColor === 'blue'}
+                />
+                <Styles.ToolbarItemColor
+                  color="red"
+                  onClick={() => setDrawColor('red')}
+                  active={drawColor === 'red'}
+                />
+              </Styles.ToolbarItem>
+              <Styles.ToolbarItem>
+                <Styles.ToolbarItemColor
+                  color="green"
+                  onClick={() => setDrawColor('green')}
+                  active={drawColor === 'green'}
+                />
+                <Styles.ToolbarItemColor
+                  color="yellow"
+                  onClick={() => setDrawColor('yellow')}
+                  active={drawColor === 'yellow'}
+                />
+              </Styles.ToolbarItem>
+            </>
+          )
+        }
         <Styles.AdPlaceholder>
           <Text
             text='Ad space'
