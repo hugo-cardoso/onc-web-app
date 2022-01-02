@@ -8,6 +8,7 @@ import * as Styles from './styles';
 
 import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationOrientation, ViewerStatus } from './types';
 import { SearchContext } from '../../contexts/searchContext';
+import { useRouter } from 'next/router';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -38,6 +39,7 @@ const defaultControls = {
 };
 
 export const ProcedureViewer = (props: ProcedureViewerProps) => {
+  const router = useRouter();
   const searchContext = useContext(SearchContext);
 
   const canvasPageRef = useRef<any>(null);
@@ -85,7 +87,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
 
     if (orientation === 'left' && angle === 0) {
       angle = 270;
-      console.log(canvasPageRef.current);
       setPageRotation(angle);
       return;
     }
@@ -114,8 +115,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
 
     if (!pageStyle) return;
 
-    console.log(canvasPageRef.current.offsetLeft);
-
     setPageDimensions({
       width: Number(pageStyle.width.replace('px', '')),
       height: Number(pageStyle.height.replace('px', '')),
@@ -126,6 +125,17 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
       y: canvasPageRef.current.offsetTop,
     });
   };
+
+  const handleClickCloseProcedure = () => {
+    searchContext.setActiveProcedure(null);
+    router.push({
+      pathname: '/app/search',
+      query: {
+        icao: router.query.icao,
+        procedureType: router.query.procedureType,
+      }
+    }, undefined, { shallow: true });
+  }
 
   useEffect(() => {
     if (
@@ -141,6 +151,14 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
   useEffect(() => {
     resetControls();
   }, [props.procedure]);
+
+  useEffect(() => {
+    window.addEventListener('resize', updatePageStyle);
+
+    return () => {
+      window.removeEventListener('resize', updatePageStyle);
+    }
+  }, []);
 
   if (status === 'error') return (
     <Styles.Layout>
@@ -216,7 +234,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           />
           <ButtonIcon
             icon='close-line'
-            onClick={() => searchContext.setActiveProcedure(null)}
+            onClick={handleClickCloseProcedure}
           />
         </Styles.ToolbarItem>
         <Styles.ToolbarItem>

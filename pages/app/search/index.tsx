@@ -11,6 +11,7 @@ import { PinnedProcedures } from '../../../src/components/PinnedProcedures';
 import { ProcedureViewer } from '../../../src/components/ProcedureViewer';
 import { Icao, Procedure, ProcedureOptions } from '../../../src/types';
 import { oncService } from '../../../src/services/oncService';
+import { useRouter } from 'next/router';
 
 type AppPageProps = {
   icao?: Icao;
@@ -19,12 +20,32 @@ type AppPageProps = {
 };
 
 const AppPage: NextPage<AppPageProps> = ({ icao, procedureType, procedure }) => {
+  const router = useRouter();
   const searchContext = useContext(SearchContext);
 
   useEffect(() => {
-    if (icao) searchContext.setIcao(icao);
-    if (procedureType) searchContext.setProcedureType(procedureType);
-    if (procedure) searchContext.setActiveProcedure(procedure);
+    const query = {} as any;
+
+    if (icao) {
+      searchContext.setIcao(icao);
+      query.icao = icao;
+    };
+
+    if (procedureType) {
+      searchContext.setProcedureType(procedureType);
+      query.procedureType = procedureType;
+    };
+
+    if (procedure) {
+      searchContext.setActiveProcedure(procedure);
+      query.procedure = procedure.id;
+    };
+
+    router.push({
+      pathname: '/app/search',
+      query,
+    }, undefined, { shallow: true });
+
   }, [])
 
   return (

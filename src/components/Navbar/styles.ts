@@ -10,6 +10,7 @@ export const Navbar = styled.nav`
   flex-direction: column;
   padding: ${ (props) => props.theme.sizes.xxs };
   box-sizing: border-box;
+  position: relative;
 `;
 
 type NavbarItemProps = {
@@ -53,4 +54,27 @@ export const NavbarItemBadge = styled.div`
   font-size: ${ (props) => props.theme.sizes.sm };
   font-family: ${ (props) => props.theme.fonts.primary };
   color: ${ (props) => props.theme.colors.neutral };
+`;
+
+export const BetaLabel = styled.div`
+  position: absolute;
+  width: calc(100% - calc(${ (props) => props.theme.sizes.xxs}) * 2);
+  left: ${ (props) => props.theme.sizes.xxs};
+  bottom: ${ (props) => props.theme.sizes.xxs};
+  /* background-color: ${ (props) => props.theme.colors.secondary }; */
+  border-radius: 3px;
+  padding: ${ (props) => props.theme.sizes.xxs } 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: ${ (props) => props.theme.sizes.sm };
+  font-family: ${ (props) => props.theme.fonts.primary };
+  color: ${ (props) => props.theme.colors.primaryHighlight };
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    color: ${ (props) => props.theme.colors.neutral };
+  }
 `;

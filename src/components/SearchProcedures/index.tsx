@@ -41,7 +41,9 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     setProcedures([]);
     setProceduresListStatus('loading');
 
-    const responseAirport = airport && airport.icao === icao ? {
+    const sameAirport = airport && airport?.icao === icao || false;
+
+    const responseAirport = sameAirport ? {
       data: airport,
       success: true,
     } as ServiceResponse : await oncService.getAirport(icao);
@@ -71,18 +73,6 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
 
     setProceduresListStatus('default');
     setProcedures(type === 'IAC' ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
-
-    const query = {
-      icao,
-      procedureType: type,
-    } as any;
-
-    if (router.query.id) query.procedure = router.query.id;
-
-    router.push({
-      pathname: '/app/search',
-      query,
-    }, undefined, { shallow: true });
   };
 
   const handleChangeProcedureType = (value: ProcedureOptions) => {
@@ -90,6 +80,14 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     if (!searchContext.icao.length) return;
     updateProceduresList(searchContext.icao, value);
     setProceduresQuery('');
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        icao: searchContext.icao,
+        procedureType: value,
+      },
+    }, undefined, { shallow: true });
   };
 
   const handleChangeProcedureFilter = (value: string) => {
@@ -136,7 +134,7 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
       pathname: '/app/search',
       query: {
         icao: procedure.icao,
-        procedureType: procedure.type,
+        procedureType: ['ADC','PDC'].includes(procedure.type) ? 'TAXI' : procedure.type,
         procedure: id,
       }
     }, undefined, { shallow: true });
@@ -145,6 +143,14 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
   const handleSubmitSearchForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchContext.icao.length) return;
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        icao: searchContext.icao,
+      },
+    }, undefined, { shallow: true });
+
     updateProceduresList(searchContext.icao, searchContext.procedureType);
   }
 
@@ -163,7 +169,7 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     if (searchContext.airport && searchContext.procedures.length) setProceduresListStatus('default');
 
     if (props.icao) {
-      updateProceduresList(props.icao, searchContext.procedureType);
+      updateProceduresList(props.icao, props.procedureType || searchContext.procedureType);
     }
   }, []);
 

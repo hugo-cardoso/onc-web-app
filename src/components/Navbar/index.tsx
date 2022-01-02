@@ -74,6 +74,7 @@ export const Navbar = () => {
           </Styles.NavbarItem>
         ))
       }
+      <Styles.BetaLabel>BETA</Styles.BetaLabel>
     </Styles.Navbar>
   )
 }
