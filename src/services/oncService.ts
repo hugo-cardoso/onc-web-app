@@ -43,5 +43,20 @@ export const oncService = {
     } finally {
       return response;
     }
+  },
+
+  getAirportMetar: async (icao: Icao): Promise<ServiceResponse> => {
+    const response: ServiceResponse = {
+      data: null,
+      success: false,
+    };
+
+    try {
+      const apiResponse = await axios.get(`/metar?icao=${ icao }`);
+      response.success = true;
+      response.data = apiResponse.data;
+    } finally {
+      return response;
+    }
   }
 }

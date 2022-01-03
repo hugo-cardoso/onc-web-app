@@ -4,6 +4,8 @@ export type Airport = {
   name: string;
   icao: string;
   location: {
+    city: string;
+    state: string;
     cordinates: {
       lat: string;
       lng: string;

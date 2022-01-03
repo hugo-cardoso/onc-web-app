@@ -155,6 +155,7 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     }, undefined, { shallow: true });
 
     updateProceduresList(searchContext.icao, searchContext.procedureType);
+    searchContext.setAirportMetar('');
   }
 
   const parseProceduresList = (procedures: Procedure[], pinnedProcedures: Procedure[]) => {
