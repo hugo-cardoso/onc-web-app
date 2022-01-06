@@ -123,4 +123,8 @@ export const AdPlaceholder = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: ${ (props) => props.theme.sizes.xxs };
+  padding: ${ (props) => props.theme.sizes.sm };
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1.5;
 `;

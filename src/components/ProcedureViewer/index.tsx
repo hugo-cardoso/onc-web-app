@@ -322,18 +322,11 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           )
         }
         <Styles.AdPlaceholder>
-          <iframe
-            data-aa='1887751'
-            src='//ad.a-ads.com/1887751?size=120x600'
-            style={{
-              width: '120px',
-              height: '600px',
-              border: '0px',
-              padding: '0',
-              overflow: 'hidden',
-              backgroundColor: 'transparent',
-            }}
-          ></iframe>
+          <Text
+            text='Advertise here'
+            size='medium'
+            color='highlight'
+          />
         </Styles.AdPlaceholder>
       </Styles.Toolbar>
     </Styles.Layout>
