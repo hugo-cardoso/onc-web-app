@@ -14,7 +14,7 @@ const Home: NextPage = () => {
       <Styles.DonateSection>
         <Styles.DonateTitle>Enjoying? Make a donation to the project</Styles.DonateTitle>
         <Styles.DonateCards>
-          <Donate />
+          <Donate type='default'/>
         </Styles.DonateCards>
       </Styles.DonateSection>
     </Styles.Wrapper>

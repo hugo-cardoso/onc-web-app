@@ -10,6 +10,7 @@ import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationO
 import { SearchContext } from '../../contexts/searchContext';
 import { useRouter } from 'next/router';
 import { ModalAirportInfo } from '../ModalAirportInfo';
+import { Donate } from '../Donate';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -323,10 +324,11 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
         }
         <Styles.AdPlaceholder>
           <Text
-            text='Advertise here'
+            text='Enjoying? Buy me a coffee! ☕'
             size='medium'
             color='highlight'
           />
+          <Donate type='aside'/>
         </Styles.AdPlaceholder>
       </Styles.Toolbar>
     </Styles.Layout>

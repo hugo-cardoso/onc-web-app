@@ -118,13 +118,18 @@ export const TextError = styled.div`
 export const AdPlaceholder = styled.div`
   width: 100%;
   height: 600px;
-  background-color: ${ (props) => props.theme.colors.primary };
+  /* background-color: ${ (props) => props.theme.colors.primary }; */
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: ${ (props) => props.theme.sizes.xxs };
-  padding: ${ (props) => props.theme.sizes.sm };
   box-sizing: border-box;
   text-align: center;
   line-height: 1.5;
+  flex-direction: column;
+
+  & > p {
+    margin-bottom: ${ (props) => props.theme.sizes.md };
+    text-align: center;
+  }
 `;
