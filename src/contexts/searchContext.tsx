@@ -26,6 +26,8 @@ type SearchContextType = {
   setShowAirportModal: (show: boolean) => void;
   airportMetar: string;
   setAirportMetar: (metar: string) => void;
+  icaoList: Icao[];
+  setIcaoList: (icaoList: Icao[]) => void;
 };
 
 export const SearchContext = createContext<SearchContextType>({
@@ -49,6 +51,8 @@ export const SearchContext = createContext<SearchContextType>({
   setShowAirportModal: () => {},
   airportMetar: '',
   setAirportMetar: () => {},
+  icaoList: [],
+  setIcaoList: () => {},
 });
 
 type SearchContextProps = {
@@ -65,7 +69,7 @@ export const SearchProvider = (props: SearchContextProps) => {
   const [pinnedProcedures, setPinnedProcedures] = useState<Procedure[]>(localStoragePinnedProceduresService.get());
   const [showAirportModal, setShowAirportModal] = useState<boolean>(false);
   const [airportMetar, setAirportMetar] = useState<string>('');
-
+  const [icaoList, setIcaoList] = useState<Icao[]>([]);
 
   const clearPinnedProcedures = () => {
     setPinnedProcedures([]);
@@ -107,6 +111,8 @@ export const SearchProvider = (props: SearchContextProps) => {
         setShowAirportModal,
         airportMetar,
         setAirportMetar,
+        icaoList,
+        setIcaoList,
       }}
     >
       { props.children }

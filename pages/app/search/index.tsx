@@ -44,6 +44,12 @@ const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) 
       query.procedure = procedure.id;
     };
 
+    if (!searchContext.icaoList.length) {
+      oncService.getIcaoList().then(icaoList => {
+        searchContext.setIcaoList(icaoList.data);
+      });
+    };
+
     router.push({
       pathname: '/app/search',
       query,

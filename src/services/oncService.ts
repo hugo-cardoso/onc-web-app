@@ -58,5 +58,20 @@ export const oncService = {
     } finally {
       return response;
     }
-  }
+  },
+
+  getIcaoList: async (): Promise<ServiceResponse> => {
+    const response: ServiceResponse = {
+      data: null,
+      success: false,
+    };
+
+    try {
+      const apiResponse = await axios.get('/airports');
+      response.success = true;
+      response.data = apiResponse.data;
+    } finally {
+      return response;
+    }
+  },
 }
