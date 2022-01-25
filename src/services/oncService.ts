@@ -74,4 +74,19 @@ export const oncService = {
       return response;
     }
   },
+
+  getPayments: async (): Promise<ServiceResponse> => {
+    const response: ServiceResponse = {
+      data: null,
+      success: false,
+    };
+
+    try {
+      const apiResponse = await axios.get('/payments');
+      response.success = true;
+      response.data = apiResponse.data;
+    } finally {
+      return response;
+    }
+  },
 }

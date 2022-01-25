@@ -1,4 +1,13 @@
+import { Text } from '@tunadao1/onc-components';
+import { useEffect, useState } from 'react';
+import { oncService } from '../../services/oncService';
+import { convertCurrency } from '../../utils/convertCurrency';
 import * as Styles from './styles';
+
+type Payments = {
+  length: number;
+  total: number;
+};
 
 type DonateProps = {
   type: 'default' | 'aside';
@@ -24,23 +33,40 @@ const OPTIONS = [
 
 export const Donate = ({
   type = 'default',
-}: DonateProps) => (
-  <Styles.Donate type={type}>
-    {
-      OPTIONS.map(({ value, url }) => (
-        <Styles.DonateItem
-          href={url}
-          target="_blank"
-          key={value}
-        >
-          {
-            (value).toLocaleString('pr-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            })
-          }
-        </Styles.DonateItem>
-      ))
-    }
-  </Styles.Donate>
-)
+}: DonateProps) => {
+  const [payments, setPayments] = useState<Payments>({
+    length: 0,
+    total: 0,
+  });
+
+  useEffect(() => {
+    const getPayments = async () => {
+      const { data, success } = await oncService.getPayments();
+      if (success) setPayments(data);
+    };
+    getPayments();
+  }, []);
+
+  return (
+    <Styles.DonateWrapper>
+      <Styles.Donate type={type}>
+        {
+          OPTIONS.map(({ value, url }) => (
+            <Styles.DonateItem
+              href={url}
+              target="_blank"
+              key={value}
+            >
+              {
+                convertCurrency(value)
+              }
+            </Styles.DonateItem>
+          ))
+        }
+      </Styles.Donate>
+      <Styles.TotalText>
+        {`Month's`} donations: <span>{convertCurrency(payments.total)}</span>
+      </Styles.TotalText>
+    </Styles.DonateWrapper>
+  )
+}

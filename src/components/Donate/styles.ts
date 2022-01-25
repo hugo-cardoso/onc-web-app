@@ -48,3 +48,22 @@ export const Donate = styled.div<DonateProps>`
     }
   `}
 `;
+
+export const DonateWrapper = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: ${ (props) => props.theme.sizes.md };
+`;
+
+export const TotalText = styled.p`
+  font-size: ${ (props) => props.theme.sizes.md };
+  font-family: ${ (props) => props.theme.fonts.primary };
+  font-weight: 400;
+  color: ${ (props) => props.theme.colors.primaryHighlight };
+  text-align: center;
+
+  & span {
+    color: ${ (props) => props.theme.colors.neutral };
+  }
+`;
