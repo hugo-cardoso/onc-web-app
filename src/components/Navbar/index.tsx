@@ -2,6 +2,7 @@ import * as Styles from './styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { SearchContext } from '../../contexts/searchContext';
+import { ProcedureViewerContext } from '../../contexts/procedureViewerContext';
 
 type NavItem = {
   onClick: () => void;
@@ -13,6 +14,7 @@ type NavItem = {
 export const Navbar = () => {
   const router = useRouter();
   const searchContext = useContext(SearchContext);
+  const procedureViewerContext = useContext(ProcedureViewerContext);
   const [showBadge, setShowBadge] = useState<boolean>(false);
 
   const changeRoute = (route: string) => router.push(route);
@@ -36,6 +38,10 @@ export const Navbar = () => {
         searchContext.setView('pinned');
         searchContext.setSidebarIsOpen(true);
         changeRoute('/app/search');
+
+        setTimeout(() => {
+          procedureViewerContext.updatePageStyle();
+        }, 300)
       },
       icon: 'pushpin-2-line',
       active: router.pathname === '/app/search' && searchContext.view === 'pinned',

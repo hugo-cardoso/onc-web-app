@@ -4,6 +4,7 @@ import { Text } from '@tunadao1/onc-components'
 import * as Styles from '../../../src/styles/AppPage.styles';
 import * as GlobalStyles from '../../../src/styles/Global.styles';
 import { SearchContext } from '../../../src/contexts/searchContext';
+import { ProcedureViewerContext } from '../../../src/contexts/procedureViewerContext';
 import { SearchProcedures } from '../../../src/components/SearchProcedures';
 
 import type { NextPage, NextPageContext } from 'next'
@@ -25,6 +26,7 @@ type AppPageProps = {
 const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) => {
   const router = useRouter();
   const searchContext = useContext(SearchContext);
+  const procedureViewerContext = useContext(ProcedureViewerContext);
 
   useEffect(() => {
     const query = {} as any;
@@ -82,7 +84,12 @@ const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) 
           <Styles.BtnToggleSidebar>
             <ButtonIcon
               icon={searchContext.sidebarIsOpen ? 'menu-fold-line' : 'menu-unfold-line'}
-              onClick={() => searchContext.setSidebarIsOpen(!searchContext.sidebarIsOpen)}
+              onClick={() => {
+                searchContext.setSidebarIsOpen(!searchContext.sidebarIsOpen);
+                setTimeout(() => {
+                  procedureViewerContext.updatePageStyle();
+                }, 300);
+              }}
             />
           </Styles.BtnToggleSidebar>
           {
