@@ -4,11 +4,14 @@ import { oncService } from '../../services/oncService';
 import { groupProcedureByRwy } from '../../utils/groupProcedureByRwy';
 
 import {
-  Input,
   TabsProcedures,
   Text,
   ListProcedures,
+  Button,
 } from '@tunadao1/onc-components';
+
+import { Input } from '../Input';
+
 import * as Styles from './styles';
 
 import type {
@@ -30,6 +33,7 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
 
   const [proceduresListStatus, setProceduresListStatus] = useState<'default' | 'loading' | 'empty' | 'error' | 'message'>('message');
   const [proceduresQuery, setProceduresQuery] = useState<string>('');
+  const [searchSugestions, setSearchSugestions] = useState<Icao[]>([]);
 
   const updateProceduresList = async (icao: Icao, type: ProcedureOptions) => {
     const {
@@ -41,7 +45,9 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     setProcedures([]);
     setProceduresListStatus('loading');
 
-    const responseAirport = airport && airport.icao === icao ? {
+    const sameAirport = airport && airport?.icao === icao || false;
+
+    const responseAirport = sameAirport ? {
       data: airport,
       success: true,
     } as ServiceResponse : await oncService.getAirport(icao);
@@ -70,15 +76,9 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     } as Procedure));
 
     setProceduresListStatus('default');
-    setProcedures(type === 'IAC' ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
 
-    router.push({
-      pathname: '/app/search',
-      query: {
-        icao,
-        procedureType: type,
-      }
-    }, undefined, { shallow: true });
+    const headboardsCount = responseAirport.data.runways.flatMap((rwy: any) => rwy.headboards).length;
+    setProcedures(type === 'IAC' && headboardsCount ? groupProcedureByRwy(responseAirport.data, parsedProcedures) : parsedProcedures);
   };
 
   const handleChangeProcedureType = (value: ProcedureOptions) => {
@@ -86,6 +86,14 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     if (!searchContext.icao.length) return;
     updateProceduresList(searchContext.icao, value);
     setProceduresQuery('');
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        icao: searchContext.icao,
+        procedureType: value,
+      },
+    }, undefined, { shallow: true });
   };
 
   const handleChangeProcedureFilter = (value: string) => {
@@ -131,7 +139,8 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
     router.push({
       pathname: '/app/search',
       query: {
-        ...router.query,
+        icao: procedure.icao,
+        procedureType: ['ADC','PDC'].includes(procedure.type) ? 'TAXI' : procedure.type,
         procedure: id,
       }
     }, undefined, { shallow: true });
@@ -140,7 +149,17 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
   const handleSubmitSearchForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!searchContext.icao.length) return;
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        icao: searchContext.icao,
+      },
+    }, undefined, { shallow: true });
+
     updateProceduresList(searchContext.icao, searchContext.procedureType);
+    searchContext.setAirportMetar('');
+    setSearchSugestions([]);
   }
 
   const parseProceduresList = (procedures: Procedure[], pinnedProcedures: Procedure[]) => {
@@ -154,11 +173,45 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
       }));
   }
 
+  const handleChangeIcaoInput = (value: string) => {
+    searchContext.setIcao(value);
+    
+    if (value.length >= 2) {
+      const autosugestions = searchContext.icaoList.filter(icao => icao.toLocaleLowerCase().startsWith(value.toLocaleLowerCase()));
+      setSearchSugestions(autosugestions);
+    } else {
+      setSearchSugestions([]);
+    }
+  };
+
+  const handleClickAutosugestion = (icao: string) => {
+    searchContext.setIcao(icao);
+    setSearchSugestions([]);
+
+    updateProceduresList(icao, searchContext.procedureType);
+
+    router.push({
+      pathname: '/app/search',
+      query: {
+        icao: searchContext.icao,
+        procedureType: searchContext.procedureType,
+      },
+    }, undefined, { shallow: true });
+  };
+
   useEffect(() => {
-    if (searchContext.airport && searchContext.procedures.length) setProceduresListStatus('default');
+    if (searchContext.airport && searchContext.procedures.length) {
+      setProceduresListStatus('default');
+      return;
+    };
+
+    if (props.procedureType) {
+      searchContext.setProcedureType(props.procedureType);
+    }
 
     if (props.icao) {
-      updateProceduresList(props.icao, searchContext.procedureType);
+      searchContext.setIcao(props.icao);
+      updateProceduresList(props.icao, props.procedureType || searchContext.procedureType);
     }
   }, []);
 
@@ -168,13 +221,30 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
         <Input
           label="Search"
           placeholder="Search for airport ICAO"
-          onChange={(value) => searchContext.setIcao(value)}
-          initialValue={props.icao || searchContext.icao}
+          onChange={handleChangeIcaoInput}
+          onBlur={() => setTimeout(() => setSearchSugestions([]), 300)}
+          initialValue={searchContext.icao}
         />
+        {
+          searchSugestions.length > 0 && (
+            <Styles.SearchAutoComplete>
+              {
+                searchSugestions.map((icao: string) => (
+                  <Styles.SearchAutoCompleteItem
+                    onClick={() => handleClickAutosugestion(icao)}
+                    key={icao}
+                  >
+                    { icao }
+                  </Styles.SearchAutoCompleteItem>
+                ))
+              }
+            </Styles.SearchAutoComplete>
+          )
+        }
       </Styles.SearchForm>
       <Styles.ProceduresTabs>
         <TabsProcedures
-          initialTab={props.procedureType || searchContext.procedureType as any}
+          initialTab={searchContext.procedureType as any}
           onTabChange={handleChangeProcedureType}
         />
       </Styles.ProceduresTabs>
@@ -185,6 +255,10 @@ export const SearchProcedures = (props: SearchProceduresProps) => {
               text={`${ searchContext.airport.icao } - ${ searchContext.airport.name }`}
               color='neutral'
               size='medium'
+            />
+            <Button
+              text='INFO'
+              onClick={() => searchContext.setShowAirportModal(true)}
             />
           </Styles.Airport>
         )

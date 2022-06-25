@@ -1,5 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { lighten } from 'polished';
+
+import type { DrawColor } from './types';
 
 export const Layout = styled.div`
   display: grid;
@@ -69,7 +71,7 @@ export const Toolbar = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: ${ (props) => props.theme.sizes.sm };
+  padding: ${ (props) => props.theme.sizes.sm };
   box-sizing: border-box;
   border-left: 1px solid ${ (props) => props.theme.colors.primaryLight };
   background-color: ${ (props) => props.theme.colors.primaryDark };
@@ -80,6 +82,25 @@ export const ToolbarItem = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: ${ (props) => props.theme.sizes.sm };
   margin-bottom: ${ (props) => props.theme.sizes.sm };
+`;
+
+type ToolbarItemColorProps = {
+  color: DrawColor;
+  active?: boolean;
+};
+
+export const ToolbarItemColor = styled.div<ToolbarItemColorProps>`
+  width: ${ (props) => props.theme.sizes.xxl };
+  height: ${ (props) => props.theme.sizes.xxl };
+  border-radius: ${ (props) => props.theme.sizes.xxs };
+  background-color: ${ (props) => props.color };
+  border: 1px solid ${ (props) => props.theme.colors.primaryLight };
+  cursor: pointer;
+  box-sizing: border-box;
+
+  ${ (props) => props.active && css`
+    border-color: ${ (props) => props.theme.colors.neutral };
+  `}
 `;
 
 export const TextError = styled.div`
@@ -95,6 +116,20 @@ export const TextError = styled.div`
 `;
 
 export const AdPlaceholder = styled.div`
-  width: 120px;
+  width: 100%;
   height: 600px;
+  /* background-color: ${ (props) => props.theme.colors.primary }; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${ (props) => props.theme.sizes.xxs };
+  box-sizing: border-box;
+  text-align: center;
+  line-height: 1.5;
+  flex-direction: column;
+
+  & > p {
+    margin-bottom: ${ (props) => props.theme.sizes.md };
+    text-align: center;
+  }
 `;

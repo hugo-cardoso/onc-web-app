@@ -1,5 +1,5 @@
 import * as Styles from './styles';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 import { SearchContext } from '../../contexts/searchContext';
 
@@ -7,11 +7,13 @@ type NavItem = {
   onClick: () => void;
   icon: string;
   active: boolean;
+  badge?: number | null;
 };
 
 export const Navbar = () => {
   const router = useRouter();
   const searchContext = useContext(SearchContext);
+  const [showBadge, setShowBadge] = useState<boolean>(false);
 
   const changeRoute = (route: string) => router.push(route);
 
@@ -36,6 +38,7 @@ export const Navbar = () => {
       },
       icon: 'pushpin-2-line',
       active: router.pathname === '/app/search' && searchContext.view === 'pinned',
+      badge: searchContext.pinnedProcedures.length ? searchContext.pinnedProcedures.length : 0,
     },
     {
       onClick: () => changeRoute('/release-notes'),
@@ -49,19 +52,29 @@ export const Navbar = () => {
     }
   ];
 
+  useEffect(() => {
+    setShowBadge(true);
+  },[])
+
   return (
     <Styles.Navbar>
       {
-        NAV_ITEMS.map(({ onClick, icon, active }) => (
+        NAV_ITEMS.map(({ onClick, icon, active, badge }) => (
           <Styles.NavbarItem
             key={icon}
             onClick={onClick}
             active={active}
           >
             <i className={`ri-${ icon }`}></i>
+            {
+              (showBadge && badge) ? (
+                <Styles.NavbarItemBadge>{ badge }</Styles.NavbarItemBadge>
+              ) : null
+            }
           </Styles.NavbarItem>
         ))
       }
+      <Styles.BetaLabel>BETA</Styles.BetaLabel>
     </Styles.Navbar>
   )
 }

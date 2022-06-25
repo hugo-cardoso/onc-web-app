@@ -1,5 +1,7 @@
 import { Procedure } from "../../types";
 
+export type DrawColor = 'blue' | 'red' | 'green' | 'yellow';
+
 export type PageOrientation = 'portrait' | 'landscape';
 
 export type PageRotation = 0 | 90 | 180 | 270;
