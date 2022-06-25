@@ -13,6 +13,7 @@ import { Airport, Icao, Procedure, ProcedureOptions } from '../../../src/types';
 import { oncService } from '../../../src/services/oncService';
 import { useRouter } from 'next/router';
 import { ModalAirportInfo } from '../../../src/components/ModalAirportInfo';
+import { ButtonIcon } from '../../../src/components/ButtonIcon';
 
 type AppPageProps = {
   procedureType?: ProcedureOptions;
@@ -63,7 +64,7 @@ const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) 
         <title>Open Nav Charts - Search</title>
       </Head>
 
-      <Styles.Wrapper>
+      <Styles.Wrapper isFull={!searchContext.sidebarIsOpen}>
         <Styles.Sidebar>
           {
             searchContext.view === 'search' && (
@@ -78,6 +79,12 @@ const AppPage: NextPage<AppPageProps> = ({ procedureType, procedure, airport }) 
           }
         </Styles.Sidebar>
         <Styles.Content>
+          <Styles.BtnToggleSidebar>
+            <ButtonIcon
+              icon={searchContext.sidebarIsOpen ? 'menu-fold-line' : 'menu-unfold-line'}
+              onClick={() => searchContext.setSidebarIsOpen(!searchContext.sidebarIsOpen)}
+            />
+          </Styles.BtnToggleSidebar>
           {
             searchContext.activeProcedure ? (
               <ProcedureViewer

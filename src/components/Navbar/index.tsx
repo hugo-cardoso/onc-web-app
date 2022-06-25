@@ -34,6 +34,7 @@ export const Navbar = () => {
     {
       onClick: () => {
         searchContext.setView('pinned');
+        searchContext.setSidebarIsOpen(true);
         changeRoute('/app/search');
       },
       icon: 'pushpin-2-line',

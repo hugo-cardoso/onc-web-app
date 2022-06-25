@@ -71,4 +71,8 @@ export const SearchAutoCompleteItem = styled.div`
   color: ${ (props) => lighten(.2, props.theme.colors.primaryHighlight) };
   font-size: ${ (props) => props.theme.sizes.sm };
   scroll-snap-align: start;
+
+  &:hover {
+    background-color: ${ (props) => lighten(.05, props.theme.colors.primaryLight) };
+  }
 `;
