@@ -3,13 +3,19 @@ import { lighten } from 'polished';
 
 import type { DrawColor } from './types';
 
-export const Layout = styled.div`
+export const Layout = styled.div<{
+  isFull?: boolean;
+}>`
   display: grid;
   width: 100%;
   height: 100%;
   grid-template-columns: minmax(100px, auto) calc(${ (props) => props.theme.sizes.xxl } * 2 + calc(${ (props) => props.theme.sizes.sm } * 3));
   grid-template-rows: repeat(2, 100%);
   position: relative;
+
+  ${(props) => props.isFull && css`
+    grid-template-columns: 1fr;
+  `}
 `;
 
 export const Wrapper = styled.div`
@@ -132,4 +138,11 @@ export const AdPlaceholder = styled.div`
     margin-bottom: ${ (props) => props.theme.sizes.md };
     text-align: center;
   }
+`;
+
+export const BtnToggleToolbar = styled.div`
+  position: absolute;
+  top: ${ (props) => props.theme.sizes.sm };
+  right: ${ (props) => props.theme.sizes.lg };
+  z-index: 11;
 `;

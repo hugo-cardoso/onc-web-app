@@ -167,7 +167,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
   )
 
   return (
-    <Styles.Layout>
+    <Styles.Layout isFull={!procedureViewerContext.toolbarIsOpen}>
       <Styles.Wrapper ref={wrapperRef}>
         <Document
           file={`${ process.env.NEXT_PUBLIC_API_URL }/charts/id?id=${ props.procedure.id }`}
@@ -189,7 +189,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
             renderTextLayer={false}
             canvasRef={(page) => {
               if (!page) return;
-              console.log(page);
               procedureViewerContext.setPageRef(page);
             }}
             onRenderSuccess={procedureViewerContext.updatePageStyle}
@@ -218,107 +217,122 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
           </Page>
         </Document>
         <ModalAirportInfo />
+        <Styles.BtnToggleToolbar>
+          <ButtonIcon
+            icon={procedureViewerContext.toolbarIsOpen ?  'menu-unfold-line' : 'menu-fold-line'}
+            onClick={() => {
+              procedureViewerContext.setToolbarIsOpen(!procedureViewerContext.toolbarIsOpen);
+              setTimeout(() => {
+                procedureViewerContext.updatePageStyle();
+              }, 300);
+            }}
+          />
+        </Styles.BtnToggleToolbar>
       </Styles.Wrapper>
-      <Styles.Toolbar>
-        <Styles.ToolbarItem>
-          <ButtonIcon
-            icon='pencil-line'
-            onClick={() => setActiveDraw(!activeDraw)}
-            active={activeDraw}
-          />
-          <ButtonIcon
-            icon='close-line'
-            onClick={handleClickCloseProcedure}
-          />
-        </Styles.ToolbarItem>
-        {
-          !activeDraw ? (
-            <>
-              <Styles.ToolbarItem>
-                <ButtonIcon
-                  icon='zoom-out-line'
-                  onClick={() => handleClickZoom(zoom - 1)}
-                  disabled={!zoom || activeDraw}
-                />
-                <ButtonIcon
-                  icon='zoom-in-line'
-                  onClick={() => handleClickZoom(zoom + 1)}
-                  disabled={(zoom === zoomLevels[pageOrientation].length - 1) || activeDraw}
-                />
-              </Styles.ToolbarItem>
-              <Styles.ToolbarItem>
-                <ButtonIcon
-                  icon='anticlockwise-2-line'
-                  onClick={() => handleClickRotate('left')}
-                  disabled={activeDraw}
-                />
-                <ButtonIcon
-                  icon='clockwise-2-line'
-                  onClick={() => handleClickRotate('right')}
-                  disabled={activeDraw}
-                />
-              </Styles.ToolbarItem>
-              <Styles.ToolbarItem>
-                <ButtonIcon
-                  icon='arrow-left-s-line'
-                  onClick={() => setPageNumber(pageNumber - 1)}
-                  disabled={(pageNumber === 1) || activeDraw}
-                />
-                <ButtonIcon
-                  icon='arrow-right-s-line'
-                  onClick={() => setPageNumber(pageNumber + 1)}
-                  disabled={(pageNumber === numberOfPages) || activeDraw}
-                />
-              </Styles.ToolbarItem>
-            </>
-          ) : (
-            <>
-              <Styles.ToolbarItem>
-                <ButtonIcon
-                  icon='arrow-go-back-line'
-                  onClick={() => canvasRef.current?.undo()}
-                />
-                <ButtonIcon
-                  icon='refresh-line'
-                  onClick={() => canvasRef.current?.clear()}
-                />
-              </Styles.ToolbarItem>
-              <Styles.ToolbarItem>
-                <Styles.ToolbarItemColor
-                  color="blue"
-                  onClick={() => setDrawColor('blue')}
-                  active={drawColor === 'blue'}
-                />
-                <Styles.ToolbarItemColor
-                  color="red"
-                  onClick={() => setDrawColor('red')}
-                  active={drawColor === 'red'}
-                />
-              </Styles.ToolbarItem>
-              <Styles.ToolbarItem>
-                <Styles.ToolbarItemColor
-                  color="green"
-                  onClick={() => setDrawColor('green')}
-                  active={drawColor === 'green'}
-                />
-                <Styles.ToolbarItemColor
-                  color="yellow"
-                  onClick={() => setDrawColor('yellow')}
-                  active={drawColor === 'yellow'}
-                />
-              </Styles.ToolbarItem>
-            </>
-          )
-        }
-        <Styles.AdPlaceholder>
-          <Text
-            text='Enjoying? Buy me a coffee! ☕'
-            size='medium'
-            color='highlight'
-          />
-          <Donate type='aside'/>
-        </Styles.AdPlaceholder>
-      </Styles.Toolbar>
+      {
+        procedureViewerContext.toolbarIsOpen && (
+          <Styles.Toolbar>
+            <Styles.ToolbarItem>
+              <ButtonIcon
+                icon='pencil-line'
+                onClick={() => setActiveDraw(!activeDraw)}
+                active={activeDraw}
+              />
+              <ButtonIcon
+                icon='close-line'
+                onClick={handleClickCloseProcedure}
+              />
+            </Styles.ToolbarItem>
+            {
+              !activeDraw ? (
+                <>
+                  <Styles.ToolbarItem>
+                    <ButtonIcon
+                      icon='zoom-out-line'
+                      onClick={() => handleClickZoom(zoom - 1)}
+                      disabled={!zoom || activeDraw}
+                    />
+                    <ButtonIcon
+                      icon='zoom-in-line'
+                      onClick={() => handleClickZoom(zoom + 1)}
+                      disabled={(zoom === zoomLevels[pageOrientation].length - 1) || activeDraw}
+                    />
+                  </Styles.ToolbarItem>
+                  <Styles.ToolbarItem>
+                    <ButtonIcon
+                      icon='anticlockwise-2-line'
+                      onClick={() => handleClickRotate('left')}
+                      disabled={activeDraw}
+                    />
+                    <ButtonIcon
+                      icon='clockwise-2-line'
+                      onClick={() => handleClickRotate('right')}
+                      disabled={activeDraw}
+                    />
+                  </Styles.ToolbarItem>
+                  <Styles.ToolbarItem>
+                    <ButtonIcon
+                      icon='arrow-left-s-line'
+                      onClick={() => setPageNumber(pageNumber - 1)}
+                      disabled={(pageNumber === 1) || activeDraw}
+                    />
+                    <ButtonIcon
+                      icon='arrow-right-s-line'
+                      onClick={() => setPageNumber(pageNumber + 1)}
+                      disabled={(pageNumber === numberOfPages) || activeDraw}
+                    />
+                  </Styles.ToolbarItem>
+                </>
+              ) : (
+                <>
+                  <Styles.ToolbarItem>
+                    <ButtonIcon
+                      icon='arrow-go-back-line'
+                      onClick={() => canvasRef.current?.undo()}
+                    />
+                    <ButtonIcon
+                      icon='refresh-line'
+                      onClick={() => canvasRef.current?.clear()}
+                    />
+                  </Styles.ToolbarItem>
+                  <Styles.ToolbarItem>
+                    <Styles.ToolbarItemColor
+                      color="blue"
+                      onClick={() => setDrawColor('blue')}
+                      active={drawColor === 'blue'}
+                    />
+                    <Styles.ToolbarItemColor
+                      color="red"
+                      onClick={() => setDrawColor('red')}
+                      active={drawColor === 'red'}
+                    />
+                  </Styles.ToolbarItem>
+                  <Styles.ToolbarItem>
+                    <Styles.ToolbarItemColor
+                      color="green"
+                      onClick={() => setDrawColor('green')}
+                      active={drawColor === 'green'}
+                    />
+                    <Styles.ToolbarItemColor
+                      color="yellow"
+                      onClick={() => setDrawColor('yellow')}
+                      active={drawColor === 'yellow'}
+                    />
+                  </Styles.ToolbarItem>
+                </>
+              )
+            }
+            <Styles.AdPlaceholder>
+              <Text
+                text='Enjoying? Buy me a coffee! ☕'
+                size='medium'
+                color='highlight'
+              />
+              <Donate type='aside'/>
+            </Styles.AdPlaceholder>
+          </Styles.Toolbar>
+        )
+      }
     </Styles.Layout>
   )
 }

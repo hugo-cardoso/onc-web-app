@@ -19,6 +19,8 @@ interface ProcedureViewerContextType {
   setPageDimensions: (pageDimensions: PageDimensions) => void;
   setPagePosition: (pagePosition: PagePosition) => void;
   updatePageStyle: () => void;
+  toolbarIsOpen: boolean;
+  setToolbarIsOpen: (toolbarIsOpen: boolean) => void;
 };
 
 export const ProcedureViewerContext = createContext<ProcedureViewerContextType>({
@@ -35,6 +37,8 @@ export const ProcedureViewerContext = createContext<ProcedureViewerContextType>(
   setPageDimensions: () => {},
   setPagePosition: () => {},
   updatePageStyle: () => {},
+  toolbarIsOpen: false,
+  setToolbarIsOpen: () => {},
 });
 
 type ProcedureViewerContextProviderProps = {
@@ -51,9 +55,9 @@ export const ProcedureViewerProvider = (props: ProcedureViewerContextProviderPro
     x: 0,
     y: 0,
   });
+  const [toolbarIsOpen, setToolbarIsOpen] = useState<boolean>(true);
 
   const setPageRef = (page: HTMLCanvasElement) => {
-    console.log(page);
     pageRef.current = page;
   }
 
@@ -84,6 +88,8 @@ export const ProcedureViewerProvider = (props: ProcedureViewerContextProviderPro
         setPageDimensions,
         setPagePosition,
         updatePageStyle,
+        toolbarIsOpen,
+        setToolbarIsOpen,
       }}
     >
       {props.children}
