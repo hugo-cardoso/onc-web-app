@@ -58,7 +58,6 @@ export const ProcedureViewerProvider = (props: ProcedureViewerContextProviderPro
   const [toolbarIsOpen, setToolbarIsOpen] = useState<boolean>(true);
 
   const setPageRef = (page: HTMLCanvasElement) => {
-    console.log(page);
     pageRef.current = page;
   }
 

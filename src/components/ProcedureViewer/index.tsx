@@ -189,7 +189,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
             renderTextLayer={false}
             canvasRef={(page) => {
               if (!page) return;
-              console.log(page);
               procedureViewerContext.setPageRef(page);
             }}
             onRenderSuccess={procedureViewerContext.updatePageStyle}
