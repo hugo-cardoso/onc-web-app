@@ -40,7 +40,7 @@ export const Content = styled.section`
 
 export const BtnToggleSidebar = styled.div`
   position: absolute;
-  top: 15px;
-  left: 15px;
-  z-index: 10;
+  top: ${ (props) => props.theme.sizes.sm };
+  left: ${ (props) => props.theme.sizes.sm };
+  z-index: 11;
 `;
