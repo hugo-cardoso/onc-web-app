@@ -28,6 +28,8 @@ type SearchContextType = {
   setAirportMetar: (metar: string) => void;
   icaoList: Icao[];
   setIcaoList: (icaoList: Icao[]) => void;
+  sidebarIsOpen: boolean;
+  setSidebarIsOpen: (sidebarIsOpen: boolean) => void;
 };
 
 export const SearchContext = createContext<SearchContextType>({
@@ -53,6 +55,8 @@ export const SearchContext = createContext<SearchContextType>({
   setAirportMetar: () => {},
   icaoList: [],
   setIcaoList: () => {},
+  sidebarIsOpen: true,
+  setSidebarIsOpen: () => {},
 });
 
 type SearchContextProps = {
@@ -70,6 +74,7 @@ export const SearchProvider = (props: SearchContextProps) => {
   const [showAirportModal, setShowAirportModal] = useState<boolean>(false);
   const [airportMetar, setAirportMetar] = useState<string>('');
   const [icaoList, setIcaoList] = useState<Icao[]>([]);
+  const [sidebarIsOpen, setSidebarIsOpen] = useState<boolean>(true);
 
   const clearPinnedProcedures = () => {
     setPinnedProcedures([]);
@@ -113,6 +118,8 @@ export const SearchProvider = (props: SearchContextProps) => {
         setAirportMetar,
         icaoList,
         setIcaoList,
+        sidebarIsOpen,
+        setSidebarIsOpen,
       }}
     >
       { props.children }

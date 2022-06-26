@@ -8,6 +8,7 @@ import * as Styles from './styles';
 
 import type { ProcedureViewerProps, PageOrientation, PageRotation, PageRotationOrientation, ViewerStatus, DrawColor } from './types';
 import { SearchContext } from '../../contexts/searchContext';
+import { ProcedureViewerContext } from '../../contexts/procedureViewerContext';
 import { useRouter } from 'next/router';
 import { ModalAirportInfo } from '../ModalAirportInfo';
 import { Donate } from '../Donate';
@@ -44,8 +45,9 @@ const defaultControls = {
 export const ProcedureViewer = (props: ProcedureViewerProps) => {
   const router = useRouter();
   const searchContext = useContext(SearchContext);
+  const procedureViewerContext = useContext(ProcedureViewerContext);
 
-  const canvasPageRef = useRef<any>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef: React.MutableRefObject<CanvasDraw | null> = useRef(null);
   const [status, setStatus] = useState<ViewerStatus>(defaultControls.status);
   const [pageNumber, setPageNumber] = useState(defaultControls.pageNumber);
@@ -53,8 +55,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
   const [zoom, setZoom] = useState<number>(defaultControls.zoom);
   const [pageRotation, setPageRotation] = useState<PageRotation>(defaultControls.rotation);
   const [pageOrientation, setPageOrientation] = useState<PageOrientation>(defaultControls.orientation);
-  const [pageDimensions, setPageDimensions] = useState<{ width: number, height: number }>({ width: 200, height: 200 });
-  const [pagePosition, setPagePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 });
   const [activeDraw, setActiveDraw] = useState<boolean>(false);
   const [drawColor, setDrawColor] = useState<DrawColor>('blue');
 
@@ -65,8 +65,8 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     setNumberOfPages(defaultControls.numberOfPages);
     setPageRotation(defaultControls.rotation);
     setActiveDraw(false);
-    setPageDimensions({ width: 200, height: 200 });
-    setPagePosition({ x: 0, y: 0 });
+    procedureViewerContext.setPageDimensions({ width: 200, height: 200 });
+    procedureViewerContext.setPagePosition({ x: 0, y: 0 });
     setDrawColor('blue');
   };
 
@@ -77,7 +77,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
 
   const handlePageLoadSuccess = (page: PDFPageProxy) => {
     setPageOrientation(page.width > page.height ? 'landscape' : 'portrait');
-    setPageDimensions({ width: page.width, height: page.height });
+    procedureViewerContext.setPageDimensions({ width: page.width, height: page.height });
   };
   
 
@@ -115,22 +115,6 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     setZoom(zoom);
   };
 
-  const updatePageStyle = () => {
-    const pageStyle = getComputedStyle(canvasPageRef.current);
-
-    if (!pageStyle) return;
-
-    setPageDimensions({
-      width: Number(pageStyle.width.replace('px', '')),
-      height: Number(pageStyle.height.replace('px', '')),
-    });
-
-    setPagePosition({
-      x: canvasPageRef.current.offsetLeft,
-      y: canvasPageRef.current.offsetTop,
-    });
-  };
-
   const handleClickCloseProcedure = () => {
     searchContext.setActiveProcedure(null);
     router.push({
@@ -158,10 +142,10 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
   }, [props.procedure]);
 
   useEffect(() => {
-    window.addEventListener('resize', updatePageStyle);
+    window.addEventListener('resize', procedureViewerContext.updatePageStyle);
 
     return () => {
-      window.removeEventListener('resize', updatePageStyle);
+      window.removeEventListener('resize', () => procedureViewerContext.updatePageStyle);
     }
   }, []);
 
@@ -184,7 +168,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
 
   return (
     <Styles.Layout>
-      <Styles.Wrapper>
+      <Styles.Wrapper ref={wrapperRef}>
         <Document
           file={`${ process.env.NEXT_PUBLIC_API_URL }/charts/id?id=${ props.procedure.id }`}
           renderMode='canvas'
@@ -203,8 +187,12 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
             onLoadSuccess={handlePageLoadSuccess}
             renderAnnotationLayer={false}
             renderTextLayer={false}
-            canvasRef={canvasPageRef}
-            onRenderSuccess={updatePageStyle}
+            canvasRef={(page) => {
+              if (!page) return;
+              console.log(page);
+              procedureViewerContext.setPageRef(page);
+            }}
+            onRenderSuccess={procedureViewerContext.updatePageStyle}
           >
             {
               activeDraw && (
@@ -212,16 +200,16 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
                   style={{
                     backgroundColor: 'rgba(255, 255, 255, 0)',
                     position: 'absolute',
-                    left: pagePosition.x,
-                    top: pagePosition.y,
+                    left: procedureViewerContext.pagePosition.x,
+                    top: procedureViewerContext.pagePosition.y,
                     zIndex: 10,
                   }}
                   catenaryColor='rgba(0, 0, 0, 0)'
                   hideGrid={true}
                   brushRadius={3}
                   brushColor={drawColor}
-                  canvasWidth={pageDimensions.width}
-                  canvasHeight={pageDimensions.height}
+                  canvasWidth={procedureViewerContext.pageDimensions.width}
+                  canvasHeight={procedureViewerContext.pageDimensions.height}
                   lazyRadius={0}
                   ref={canvas => canvasRef.current = canvas}
                 />

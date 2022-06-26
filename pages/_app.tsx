@@ -4,6 +4,7 @@ import { Navbar } from '../src/components/Navbar';
 import { Global, Wrapper, Main, Nav } from '../src/styles/Global.styles';
 import type { AppProps } from 'next/app'
 import { SearchProvider } from '../src/contexts/searchContext';
+import { ProcedureViewerProvider } from '../src/contexts/procedureViewerContext';
 import Head from 'next/head';
 import Script from 'next/script'
 
@@ -38,12 +39,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
       <Global />
       <SearchProvider>
-        <Wrapper>
-          <Navbar />
-          <Main>
-            <Component {...pageProps} />
-          </Main>
-        </Wrapper>
+        <ProcedureViewerProvider>
+          <Wrapper>
+            <Navbar />
+            <Main>
+              <Component {...pageProps} />
+            </Main>
+          </Wrapper>
+        </ProcedureViewerProvider>
       </SearchProvider>
     </ThemeProvider>
   )
