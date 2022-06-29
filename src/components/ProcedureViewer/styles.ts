@@ -14,7 +14,7 @@ export const Layout = styled.div<{
   position: relative;
 
   ${(props) => props.isFull && css`
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(100px, auto);
   `}
 `;
 
