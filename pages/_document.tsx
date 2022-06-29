@@ -35,6 +35,11 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <meta
+            name="viewport"
+            content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+          />
+          <link rel="manifest" href="/manifest.json" />
           <link rel="icon" href={`${ DOMAIN }/favicon.ico`} />
           <link rel="apple-touch-icon" sizes="57x57" href={`${ DOMAIN }/apple-icon-57x57.png`} />
           <link rel="apple-touch-icon" sizes="60x60" href={`${ DOMAIN }/apple-icon-60x60.png`} />

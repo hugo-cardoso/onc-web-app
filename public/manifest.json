@@ -1,10 +1,10 @@
 {
   "name": "Open Nav Charts",
-  "short_name": "ONC",
+  "short_name": "Open Nav Charts",
   "theme_color": "#ffffff",
   "background_color": "#141419",
   "display": "fullscreen",
-  "orientation": "portrait",
+  "orientation": "landscape",
   "scope": "/",
   "start_url": "/",
   "icons": [
