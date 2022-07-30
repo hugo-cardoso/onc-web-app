@@ -30,7 +30,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Script 
               src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5349498948047909"
               strategy="afterInteractive"
-              crossorigin="anonymous"
+              crossOrigin="anonymous"
             />
             <Script id="google-analytics" strategy="afterInteractive">
               {`
