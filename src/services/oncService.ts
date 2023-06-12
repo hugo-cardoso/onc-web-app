@@ -16,7 +16,7 @@ export const oncService = {
 
     try {
       const apiResponse = await axios.get(`/search/airport/${ icao.toLocaleLowerCase() }`);
-      await axios.put(`/search/airport/${ icao.toLocaleLowerCase() }/searchcount`);
+      axios.put(`/search/airport/${ icao.toLocaleLowerCase() }/searchcount`);
       
       response.data = apiResponse.data;
       response.success = true;
