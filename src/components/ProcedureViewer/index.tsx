@@ -12,6 +12,7 @@ import { ProcedureViewerContext } from '../../contexts/procedureViewerContext';
 import { useRouter } from 'next/router';
 import { ModalAirportInfo } from '../ModalAirportInfo';
 import { Donate } from '../Donate';
+import { AdsenseAliExpress } from "../Adsense/Aliexpress"
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -147,6 +148,10 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     return () => {
       window.removeEventListener('resize', () => procedureViewerContext.updatePageStyle);
     }
+  }, []);
+
+  useEffect(() => {
+    console.log("render")
   }, []);
 
   if (status === 'error') return (
@@ -322,14 +327,16 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
                 </>
               )
             }
-            <Styles.AdPlaceholder>
+            {/* Desabilitado para experimentar os Banners do Ali Express */}
+            {/* <Styles.AdPlaceholder>
               <Text
                 text='Enjoying? Buy me a coffee! ☕'
                 size='medium'
                 color='highlight'
               />
               <Donate type='aside'/>
-            </Styles.AdPlaceholder>
+            </Styles.AdPlaceholder> */}
+            <AdsenseAliExpress />
           </Styles.Toolbar>
         )
       }
