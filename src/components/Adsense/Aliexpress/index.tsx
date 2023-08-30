@@ -9,19 +9,19 @@ type Ad = {
 
 const ads: Ad[] = [
   {
-    link: "https://s.click.aliexpress.com/e/_DEepzBD?bz=120*600",
+    link: "https://s.click.aliexpress.com/e/_DkXoAkT?bz=120*600",
     imageUrl:
-      "https://ae01.alicdn.com/kf/S634b3dcfcb104d99bbf86ee1b753bed5y.jpg",
+      "https://ae01.alicdn.com/kf/H062aa544483743cbab681f4bcba0dcfbf.jpg",
   },
   {
-    link: "https://s.click.aliexpress.com/e/_DDosDs3?bz=120*600",
+    link: "https://s.click.aliexpress.com/e/_DeOLQLD?bz=120*600",
     imageUrl:
-      "https://ae01.alicdn.com/kf/S9d21d1f1b6b345209b041e5c349a2d52A.png",
+      "https://ae01.alicdn.com/kf/S1f0142a868604ba3beb82473818aaf17s.png",
   },
   {
-    link: "https://s.click.aliexpress.com/e/_Dl87QkR?bz=120*600",
+    link: "https://s.click.aliexpress.com/e/_DcA2xXV?bz=120*600",
     imageUrl:
-      "https://ae01.alicdn.com/kf/S81341a66271044179494cc988731c427d.jpg",
+      "https://ae01.alicdn.com/kf/Sdf013b23915c4cf0b39946954f2dfef8X.png",
   },
 ];
 
