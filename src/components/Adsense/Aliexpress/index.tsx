@@ -36,7 +36,7 @@ export function AdsenseAliExpress() {
   if (!ad) return null;
 
   return (
-    <Styles.Banner href={ad.link} target="_parent">
+    <Styles.Banner href={ad.link} target="parent">
       <Styles.BannerImage width="120" height="600" src={ad.imageUrl} />
     </Styles.Banner>
   );
