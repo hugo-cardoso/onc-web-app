@@ -37,7 +37,7 @@ export function AdsenseAliExpress() {
 
   return (
     <Styles.Banner href={ad.link} target="parent">
-      <Styles.BannerImage width="120" height="600" src={ad.imageUrl} />
+      <Styles.BannerImage width="120" src={ad.imageUrl} />
     </Styles.Banner>
   );
 }
