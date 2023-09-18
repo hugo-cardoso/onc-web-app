@@ -12,7 +12,7 @@ import { ProcedureViewerContext } from '../../contexts/procedureViewerContext';
 import { useRouter } from 'next/router';
 import { ModalAirportInfo } from '../ModalAirportInfo';
 import { Donate } from '../Donate';
-import { AdsenseAliExpress } from "../Adsense/Aliexpress"
+import { AdsenseSkeleton } from "../Adsense/Skeleton"
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
@@ -336,7 +336,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
               />
               <Donate type='aside'/>
             </Styles.AdPlaceholder> */}
-            <AdsenseAliExpress />
+            <AdsenseSkeleton />
           </Styles.Toolbar>
         )
       }
