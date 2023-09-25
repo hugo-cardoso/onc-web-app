@@ -175,7 +175,7 @@ export const ProcedureViewer = (props: ProcedureViewerProps) => {
     <Styles.Layout isFull={!procedureViewerContext.toolbarIsOpen}>
       <Styles.Wrapper ref={wrapperRef}>
         <Document
-          file={`${ process.env.NEXT_PUBLIC_API_URL }/charts/id?id=${ props.procedure.id }`}
+          file={`https://onc-charts.s3.sa-east-1.amazonaws.com/${router.query.icao?.toString().toUpperCase()}/${props.procedure.id}.pdf`}
           renderMode='canvas'
           onLoadSuccess={handleDocumentLoadSuccess}
           onLoadError={() => setStatus('error')}
